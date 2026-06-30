@@ -1,0 +1,4 @@
+metric,value
+runners,31655.0
+median_late_slowdown_pct,15.04
+share_wall_over_25pct,27.39
