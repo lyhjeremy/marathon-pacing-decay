@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Hitting the Wall — where a marathon field actually slows down</title>
+<meta name="description" content="Per-5K splits from 31,655 Boston Marathon finishers. Pace holds flat to 20 km, then climbs steeply from about 30 km. The median runner's late pace was 15% slower than mid-race." />
+<meta name="theme-color" content="#FBF8F1" />
+<meta property="og:title" content="Hitting the Wall" />
+<meta property="og:description" content="The wall is not a metaphor. Traced 5 km at a time across 31,655 finishers, it has a location: about 30 km." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://lyhjeremy.github.io/marathon-pacing-decay/overview/" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --paper: #FBF8F1;
+    --card: #FFFFFF;
+    --plate: #FFFFFF;
+    --ink: #1a1a2e;
+    --ink2: #3d3d55;
+    --muted: #6B7280;
+    --rule: #E5DCC7;
+    --accent: #B45309;
+    --accent2: #C33E60;
+    --link: #15868C;
+    --serif: Georgia, 'Iowan Old Style', 'Times New Roman', serif;
+    --sans: 'Source Sans 3', -apple-system, system-ui, sans-serif;
+    --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', monospace;
+    --shadow: 0 1px 2px rgba(26,26,46,.05), 0 10px 34px rgba(26,26,46,.07);
+    --spine:  92px;
+    --col:    min(100% - 2.6rem, 62rem);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #14141f;
+      --card: #1c1c2a;
+      --plate: #f7f4ec;
+      --ink: #F2EFE6;
+      --ink2: #C9C4B6;
+      --muted: #918B7D;
+      --rule: #33313f;
+      --accent: #E3BC5E;
+      --accent2: #E8748F;
+      --link: #3FB4B9;
+      --shadow: 0 1px 2px rgba(0,0,0,.32), 0 10px 34px rgba(0,0,0,.4);
+    }
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: var(--serif); font-size: clamp(17px, 0.55rem + 0.6vw, 19.5px);
+    line-height: 1.68; -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  img { max-width: 100%; height: auto; display: block; }
+  a { color: var(--link); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+  strong { font-weight: 700; color: var(--ink); }
+  code { font-family: var(--mono); font-size: .86em;
+         background: color-mix(in srgb, var(--ink) 7%, transparent);
+         padding: .12em .38em; border-radius: 4px; }
+  .wrap { width: var(--col); margin: 0 auto; }
+
+  .eyebrow { font-family: var(--mono); font-weight: 600; font-size: 11.5px;
+             letter-spacing: .17em; text-transform: uppercase; color: var(--muted);
+             margin: 0 0 14px; }
+
+  .masthead { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; padding: 30px 0 0; }
+  .logo { font-family: var(--sans); font-weight: 800; font-size: 21px;
+          letter-spacing: -.02em; display: flex; align-items: center; gap: 9px; }
+  .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--accent); flex: none; }
+  .tagline { font-size: 15px; color: var(--ink2); font-family: var(--sans); }
+
+  .hero { padding: 44px 0 54px; }
+  .kicker { font-family: var(--sans); font-size: clamp(18px, 2.1vw, 23px); font-weight: 600;
+            color: var(--muted); margin: 0 0 8px; letter-spacing: -.01em; }
+  .hero h1 { font-family: var(--sans); font-size: clamp(37px, 6vw, 72px); font-weight: 800;
+             letter-spacing: -.035em; line-height: 1.04; margin: 0; max-width: 17ch; }
+  .hero-sub { margin: 24px 0 0; font-size: 1.06em; color: var(--ink2); max-width: 60ch; }
+
+  .cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; align-items: center; }
+  .btn { display: inline-block; padding: 13px 26px; border-radius: 8px;
+         font-family: var(--sans); font-weight: 700; font-size: 16px;
+         text-decoration: none; border: 1px solid var(--ink); transition: transform .15s ease; }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-primary { background: var(--ink); color: var(--paper); }
+  .textlink { font-family: var(--sans); font-size: 16px; font-weight: 600; color: var(--ink2);
+              text-decoration: underline; text-underline-offset: 4px;
+              text-decoration-thickness: 1px; }
+  .textlink:hover { color: var(--ink); }
+
+  .claims { display: grid; grid-template-columns: 1fr; gap: 0 52px; margin: 50px 0 0; }
+  @media (min-width: 760px) { .claims { grid-template-columns: 1fr 1fr; } }
+  .claim { padding: 18px 0 20px; border-top: 1px solid var(--rule); }
+  .claim:first-child, .claim:nth-child(2) { border-top: 2px solid var(--ink); }
+  @media (max-width: 759px) { .claim:nth-child(2) { border-top: 1px solid var(--rule); } }
+  .claim .n { font-family: var(--sans); font-weight: 800; font-size: 40px; line-height: 1.05;
+              color: var(--accent); letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+  .claim h3 { margin: 0 0 6px; }
+  .claim p { margin: 9px 0 0; font-size: 15.5px; color: var(--ink2); line-height: 1.5;
+             font-family: var(--sans); }
+
+  .route { position: relative; padding-bottom: 30px; }
+  .route::before { content: ""; position: absolute; left: calc(var(--spine) / 2); top: 8px;
+                   bottom: 80px; width: 2px; background: var(--rule); }
+  .stop { position: relative; padding: 0 0 76px var(--spine); }
+  .stop::before { content: ""; position: absolute; left: calc(var(--spine) / 2 - 7px); top: 7px;
+                  width: 16px; height: 16px; border-radius: 50%;
+                  background: var(--paper); border: 2px solid var(--ink); box-sizing: border-box; }
+  .stop--key::before { background: var(--accent); border-color: var(--accent); }
+  .stop--warn::before { background: var(--accent2); border-color: var(--accent2); }
+  .stop--end::before { background: var(--ink); }
+
+  h2 { font-family: var(--sans); font-size: clamp(27px, 3.7vw, 38px); font-weight: 800;
+       letter-spacing: -.027em; line-height: 1.13; margin: 12px 0 16px; max-width: 19ch; }
+  h3 { font-family: var(--sans); font-size: 17px; font-weight: 700; margin: 0 0 7px;
+       letter-spacing: -.012em; }
+  .stop p { margin: 0 0 17px; max-width: 60ch; color: var(--ink2); }
+
+  .bignum { font-family: var(--sans); font-weight: 800; font-size: clamp(74px, 10vw, 128px);
+            line-height: .86; letter-spacing: -.05em; margin: 6px 0 4px; color: var(--accent);
+            font-variant-numeric: tabular-nums; }
+  .bignum-note { font-family: var(--sans); font-size: 16px; color: var(--muted); margin: 0 0 20px; }
+
+  /* A white-background chart would glow in dark mode; the plate makes it read
+     as a deliberately printed page instead. */
+  figure { margin: 28px 0 0; }
+  .plate { background: var(--plate); border: 1px solid var(--rule); border-radius: 10px;
+           padding: 14px; box-shadow: var(--shadow); overflow: hidden; }
+  .plate img { border-radius: 4px; }
+  .plate--flush { padding: 0; }
+  .shot { border-radius: 10px; border: 1px solid var(--rule); box-shadow: var(--shadow);
+          overflow: hidden; background: var(--card); }
+  /* min() so the cap never exceeds the column on a phone */
+  .shot--narrow { max-width: min(430px, 100%); }
+  figcaption { margin-top: 11px; font-family: var(--sans); font-size: 14.5px;
+               color: var(--muted); line-height: 1.5; }
+  .panels { display: grid; grid-template-columns: repeat(auto-fit, minmax(258px, 1fr));
+            gap: 22px; margin-top: 28px; }
+  .panels figure { margin: 0; }
+
+  .pull { margin: 30px 0 0; padding: 20px 25px; border-left: 3px solid var(--accent);
+          background: color-mix(in srgb, var(--accent) 7%, transparent);
+          border-radius: 0 8px 8px 0; }
+  .pull p { margin: 0 0 9px; color: var(--ink); max-width: none; }
+  .pull p:last-of-type { margin: 0; }
+  .pull .who { font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
+               text-transform: uppercase; color: var(--muted); display: block; margin-top: 9px; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(238px, 1fr));
+          gap: 1px; margin-top: 28px; background: var(--rule);
+          border: 1px solid var(--rule); border-radius: 10px; overflow: hidden; }
+  .cell { background: var(--paper); padding: 22px 20px; }
+  .cell p { font-size: 15px; margin: 0; color: var(--ink2); max-width: none;
+            line-height: 1.55; font-family: var(--sans); }
+
+  /* results tables: scroll inside their own box, never the page */
+  .tablewrap { margin-top: 26px; overflow-x: auto; border: 1px solid var(--rule);
+               border-radius: 10px; background: var(--card); }
+  table { border-collapse: collapse; width: 100%; min-width: 480px;
+          font-family: var(--sans); font-size: 15.5px; }
+  th, td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--rule); }
+  th { font-family: var(--mono); font-size: 11px; letter-spacing: .1em;
+       text-transform: uppercase; color: var(--muted); font-weight: 600; }
+  td { color: var(--ink2); font-variant-numeric: tabular-nums; }
+  tr:last-child td { border-bottom: 0; }
+  .win td { color: var(--ink); font-weight: 700;
+            background: color-mix(in srgb, var(--accent) 8%, transparent); }
+
+  /* real terminal output, quoted verbatim */
+  .term { margin-top: 26px; background: #14141f; color: #e6e3da; border-radius: 10px;
+          padding: 18px 20px; overflow-x: auto; box-shadow: var(--shadow);
+          border: 1px solid #2a2a3a; }
+  .term pre { margin: 0; font-family: var(--mono); font-size: 13px; line-height: 1.62;
+              white-space: pre; }
+  .term .c { color: #9aa08f; }
+  .term .g { color: #7fd18f; }
+  .term .y { color: #E3BC5E; }
+
+  .specs { margin-top: 26px; border-top: 1px solid var(--rule); }
+  .spec { display: grid; grid-template-columns: 1fr; gap: 2px;
+          padding: 14px 0; border-bottom: 1px solid var(--rule); }
+  @media (min-width: 700px) { .spec { grid-template-columns: 178px 1fr; gap: 24px; } }
+  .spec dt { font-family: var(--mono); font-size: 11.5px; letter-spacing: .1em;
+             text-transform: uppercase; color: var(--muted); padding-top: 4px; }
+  .spec dd { margin: 0; font-size: 16px; color: var(--ink2); font-family: var(--sans); }
+
+  .close { padding: 6px 0 80px var(--spine); position: relative; }
+  .close h2 { max-width: 20ch; }
+  footer { border-top: 1px solid var(--rule); padding: 28px 0 60px;
+           font-family: var(--sans); font-size: 14.5px; color: var(--muted); }
+  footer a { color: var(--ink2); }
+  footer p { margin: 0 0 8px; }
+
+  @media (max-width: 640px) {
+    :root { --spine: 38px; }
+    .hero { padding: 36px 0 46px; }
+    .stop { padding-bottom: 58px; }
+    .plate { padding: 9px; }
+    .term { padding: 14px 14px; }
+    .term pre { font-size: 11.5px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .btn { transition: none; }
+  }
+
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="masthead">
+    <div class="logo"><span class="dot" aria-hidden="true"></span>Hitting the Wall</div>
+    <div class="tagline">the pacing-decay curve, 5 km at a time</div>
+  </header>
+
+  <section class="hero">
+    <p class="kicker">Runners talk about the wall like weather.</p>
+    <h1>It has a location. About 30 km.</h1>
+
+    <p class="hero-sub">
+      Every marathoner knows the feeling of the race turning on them, and nobody
+      agrees on where it happens. Boston records a timing mat every 5 km, so for
+      <strong>31,655 finishers</strong> the question is a measurement rather than
+      an argument. Pace holds nearly flat to 20 km, drifts through 25, and then
+      climbs steeply from <strong>30 km</strong> to the line.
+    </p>
+
+    <div class="cta-row">
+      <a class="btn btn-primary" href="../">Read the short version</a>
+      <a class="textlink" href="https://github.com/lyhjeremy/marathon-pacing-decay">or the code and data</a>
+    </div>
+
+    <div class="claims">
+      <div class="claim">
+        <div class="n">30 km</div>
+        <p>where the curve turns. Before it the field is holding pace; after it
+           the whole distribution bends upward together.</p>
+      </div>
+      <div class="claim">
+        <div class="n">15%</div>
+        <p>median late slowdown, comparing 35–40 km pace against the runner's own
+           10–20 km pace. Their own early self is the control.</p>
+      </div>
+      <div class="claim">
+        <div class="n">27%</div>
+        <p>of the field slowed by more than a quarter. Not a rare blow-up — better
+           than one runner in four.</p>
+      </div>
+      <div class="claim">
+        <div class="n">5.0 → 6.1</div>
+        <p>min/km, the field's median pace from the first segment to the last. A
+           whole minute per kilometre given away.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="wrap">
+<div class="route">
+
+  <section class="stop">
+    <p class="eyebrow">Start · the question</p>
+    <h2>Everyone names a different mile</h2>
+    <p>
+      Ask ten marathon runners where the wall is and you will get mile 18, mile
+      20, mile 22, and someone insisting it is entirely mental. The disagreement
+      survives because most people only have their own races to go on, and a
+      handful of races is not enough to see a shape.
+    </p>
+    <p>
+      Boston's timing mats remove the guesswork. Every finisher leaves a
+      cumulative time at 5, 10, 20, 25, 30, 35 and 40 km, plus the finish. Divide
+      each segment by its distance and you have that runner's pace through the
+      race. Do it for the whole field and the average shape of a marathon appears.
+    </p>
+  </section>
+
+  <section class="stop stop--key">
+    <p class="eyebrow">↓ the curve</p>
+    <h2>Flat, then a corner</h2>
+    <p>
+      The field's median pace barely moves through the first 20 km. It drifts
+      gently to 25. From <strong>30 km onward it climbs steeply</strong> and does
+      not recover. That corner is the thing runners are describing when they say
+      the wall, and it sits in the same place for the field as a whole.
+    </p>
+    <p>
+      The important detail is that the early part really is flat. This is not a
+      curve that slopes gradually from the gun, which is what you would expect if
+      fatigue simply accumulated. Something changes around 30 km.
+    </p>
+    <figure>
+      <div class="plate">
+        <img width="1680" height="960" src="../figures/01_decay_curve.png" fetchpriority="high"
+          alt="Line chart of the field's median pace across each 5 km segment. The line is nearly flat from 5 km to 20 km, rises slightly to 25 km, then climbs sharply from 30 km through to the finish." />
+      </div>
+      <figcaption>Median pace per segment across the field. Flat to 20 km, then the corner.</figcaption>
+    </figure>
+  </section>
+
+  <section class="stop">
+    <p class="eyebrow">↓ who it happens to</p>
+    <h2>The corner is much sharper at the back</h2>
+    <p>
+      Split the field by finish time and the same curve appears at very different
+      severities. Sub-3-hour runners stay close to flat the whole way. Runners
+      finishing after 4:30 lose <strong>30% or more</strong> in the closing
+      segments. The wall is not a binary event that either happens or does not;
+      it is a slope that gets steeper the further back you look.
+    </p>
+    <figure>
+      <div class="plate">
+        <img width="1680" height="960" src="../figures/02_decay_by_group.png" loading="lazy"
+          alt="Multiple pace curves, one per finish-time group, all flat early and diverging after 30 km. The fastest group stays nearly level while the slowest groups rise steeply." />
+      </div>
+      <figcaption>The same shape at every ability, with the back of the field bending hardest.</figcaption>
+    </figure>
+  </section>
+
+  <section class="stop stop--warn">
+    <p class="eyebrow">↓ the spread</p>
+    <h2>A quarter of the field loses a quarter of its pace</h2>
+
+    <div class="bignum">27%</div>
+    <p class="bignum-note">of finishers slowed by more than 25% in the closing kilometres.</p>
+
+    <p>
+      The distribution of late slowdown is wide and long-tailed. The median is
+      15%, but the right tail runs far past it. This matters for how you read the
+      median: it is not that most runners fade a little, it is that a substantial
+      minority fall apart and drag the whole picture with them.
+    </p>
+    <figure>
+      <div class="plate">
+        <img width="1600" height="919" src="../figures/03_wall_distribution.png" loading="lazy"
+          alt="Histogram of late-race slowdown across the field, peaking in the low teens of percent with a long right tail extending past 40 percent." />
+      </div>
+      <figcaption>Late slowdown across the field. The median is 15%; the tail is where the wall lives.</figcaption>
+    </figure>
+  </section>
+
+  <section class="stop">
+    <p class="eyebrow">↓ what this cannot tell you</p>
+    <h2>A location, not a cause</h2>
+    <p>
+      This measures where the slowing happens, not why. Glycogen depletion,
+      muscle damage, heat, and simply starting too fast all produce a late-race
+      fade, and split data cannot separate them. Anyone claiming this chart proves
+      a mechanism is reading more into it than is there.
+    </p>
+    <p>
+      Boston's course is also its own argument. The Newton hills run from roughly
+      16 to 21 miles, which is 26–34 km, landing squarely on the corner. Some of
+      the sharpness at 30 km is Boston's terrain rather than human physiology. A
+      flat course would likely still show the corner, but softer and perhaps a
+      little later.
+    </p>
+    <p>
+      And this is one edition of one race. The companion study on
+      <a href="https://lyhjeremy.github.io/marathon-negative-split-myth/">negative splits</a>
+      uses the same field, so the two share whatever is peculiar about that day.
+    </p>
+  </section>
+
+  <section class="stop">
+    <p class="eyebrow">↓ so what</p>
+    <h2>The fix happens before 30 km</h2>
+    <p>
+      The flat early section is the part worth staring at. By the time the curve
+      turns, the race has already been decided by choices made in the first two
+      hours. The runners who stay flat late are the ones who were not really at
+      their limit early.
+    </p>
+    <div class="pull">
+      <p>You cannot pace the last 12 km. You can only pace the first 30 and find
+         out what you left yourself.</p>
+      <span class="who">What the curve is actually saying</span>
+    </div>
+  </section>
+
+  <section class="stop stop--end">
+    <p class="eyebrow">Finish · how it was built</p>
+    <h2>Where the numbers come from</h2>
+    <p>
+      Two scripts, fully reproducible. <code>fetch_data.py</code> downloads the
+      results, <code>analyze.py</code> writes every figure and both tables here.
+      Raw data is git-ignored; the outputs are committed.
+    </p>
+    <dl class="specs">
+      <div class="spec"><dt>Data</dt><dd>Official 2014 Boston Marathon results, via the public <a href="https://github.com/llimllib/bostonmarathon">llimllib/bostonmarathon</a> mirror</dd></div>
+      <div class="spec"><dt>Sample</dt><dd>31,655 finishers with a complete set of 5 km splits</dd></div>
+      <div class="spec"><dt>Splits</dt><dd>Cumulative times at 5, 10, 20, 25, 30, 35, 40 km and finish; segment pace = time ÷ distance</dd></div>
+      <div class="spec"><dt>Late slowdown</dt><dd>35–40 km pace measured against that same runner's 10–20 km pace</dd></div>
+      <div class="spec"><dt>Built with</dt><dd>Python, pandas, matplotlib</dd></div>
+      <div class="spec"><dt>Companion study</dt><dd><a href="https://lyhjeremy.github.io/marathon-negative-split-myth/">The Negative-Split Myth</a>, on the same field split in two halves</dd></div>
+    </dl>
+  </section>
+
+</div>
+</div>
+
+<div class="wrap">
+  <section class="close">
+    <h2>The wall is at 30 km, and it is built earlier</h2>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="../">Read the short version</a>
+      <a class="textlink" href="https://github.com/lyhjeremy/marathon-pacing-decay">or the code and data</a>
+    </div>
+  </section>
+
+  <footer>
+    <p>
+      Hitting the Wall ·
+      <a href="../">Story</a> ·
+      <a href="https://github.com/lyhjeremy/marathon-pacing-decay">Source</a> ·
+      MIT © 2026 Jeremy Lee
+    </p>
+    <p>Results data © the Boston Athletic Association, via a public mirror.</p>
+  </footer>
+</div>
+</body>
+</html>
