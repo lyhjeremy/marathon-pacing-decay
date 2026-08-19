@@ -1,12 +1,14 @@
-# Hitting the Wall — the marathon pacing-decay curve
+# Hitting the Wall: the marathon pacing-decay curve
+
+Design and copy follow [these standards](https://github.com/lyhjeremy/lyhjeremy/blob/main/DESIGN_STANDARDS.md).
 
 Using per-5K splits from **31,655** finishers of the 2014 Boston Marathon, this
 traces exactly where runners slow down. Pace holds flat to ~20 km, then climbs
-steeply from about **30 km** — the wall. The median runner's late pace was **15%**
+steeply from about **30 km.** The wall. The median runner's late pace was **15%**
 slower than mid-race, and **27%** slowed by more than 25%.
 
-> 🌐 **Read the story:** https://lyhjeremy.github.io/marathon-pacing-decay/
-> 📖 **In depth:** https://lyhjeremy.github.io/marathon-pacing-decay/overview/
+> **Read the story:** https://lyhjeremy.github.io/marathon-pacing-decay/
+> **In depth:** https://lyhjeremy.github.io/marathon-pacing-decay/overview/
 
 ## Findings
 - Pace is flat to ~20 km, drifts up to 25 km, then climbs steeply from **~30 km**.

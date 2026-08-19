@@ -3,54 +3,60 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Hitting the Wall — the marathon pacing-decay curve</title>
+<title>Hitting the Wall: the marathon pacing-decay curve</title>
 <meta name="description" content="Using per-5K splits from 31,655 Boston 2014 finishers, we trace exactly where marathoners slow down. Pace holds flat to about 30 km, then the wall hits: the median runner's late pace was 15% slower, and over a quarter slowed more than 25%." />
 <style>
-  :root{--ink:#1a1a2e;--paper:#FBF8F1;--rule:#E5DCC7;--soft:#6B7280;--accent:#D4A537;--teal:#15868C;--coral:#E0567A;--plum:#5B4B8A}
+@font-face{font-family:"Source Serif 4";src:url("fonts/SourceSerif4-400.woff2")format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Source Serif 4";src:url("fonts/SourceSerif4-600.woff2")format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"IBM Plex Sans";src:url("fonts/IBMPlexSans-400.woff2")format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"IBM Plex Sans";src:url("fonts/IBMPlexSans-600.woff2")format("woff2");font-weight:600;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("fonts/IBMPlexMono-400.woff2")format("woff2");font-weight:400;font-display:swap}
+
+  :root{--ink:#1C1E1B;--paper:#EDEDE7;--rule:#C6C7BF;--soft:#52564E;--accent:#8C3A1E;--teal:#2C5852;--coral:#6E4A44;--plum:#5B4B8A}
   *{box-sizing:border-box} html,body{margin:0;padding:0}
-  body{background:var(--paper);color:var(--ink);font-family:Georgia,'Times New Roman',serif;line-height:1.7;font-size:18px}
+  body{background:var(--paper);color:var(--ink);font-family:"Source Serif 4", "Iowan Old Style", "Palatino Linotype", Palatino, serif;line-height:1.7;font-size:18px}
   .hero{width:100%;background:#14142b;overflow:hidden}.hero svg{width:100%;height:260px;display:block}
   .container{max-width:760px;margin:0 auto;padding:40px 24px 80px}
-  .kicker{text-transform:uppercase;letter-spacing:.16em;font-family:'Helvetica Neue',Arial,sans-serif;font-size:13px;color:var(--plum);font-weight:700;text-align:center;margin-bottom:14px}
+  .kicker{text-transform:uppercase;letter-spacing:.16em;font-family:"IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;font-size:13px;color:var(--plum);font-weight:700;text-align:center;margin-bottom:14px}
   h1{font-size:40px;line-height:1.18;text-align:center;margin:0 0 16px}
   .lede{font-size:21px;color:#33334d;text-align:center;margin:0 auto 6px;max-width:640px}
   .byline{color:var(--soft);font-style:italic;text-align:center;margin:20px 0 36px}
   h2{font-size:27px;margin:54px 0 14px;border-bottom:1px solid var(--rule);padding-bottom:8px}
   p{margin:0 0 18px} a{color:var(--teal)}
   .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:34px 0}
-  .stat{background:#fff;border:1px solid var(--rule);border-radius:10px;padding:22px 14px;text-align:center}
-  .stat .n{font-family:'Helvetica Neue',Arial,sans-serif;font-size:32px;font-weight:800;color:var(--plum);line-height:1}
-  .stat .l{font-size:13px;color:var(--soft);margin-top:8px;font-family:'Helvetica Neue',Arial,sans-serif}
+  .stat{background:#F5F5F0;border:1px solid var(--rule);border-radius: 0;padding:22px 14px;text-align:center}
+  .stat .n{font-family:"IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;font-size:32px;font-weight:800;color:var(--plum);line-height:1}
+  .stat .l{font-size:13px;color:var(--soft);margin-top:8px;font-family:"IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif}
   figure{margin:32px 0;text-align:center}
-  figure img{max-width:100%;height:auto;border:1px solid var(--rule);border-radius:6px;background:#fff}
+  figure img{max-width:100%;height:auto;border:1px solid var(--rule);border-radius: 0;background:#F5F5F0}
   figcaption{font-size:14px;color:var(--soft);font-style:italic;margin-top:10px}
-  .findings{background:#fff;border:1px solid var(--rule);border-radius:10px;padding:22px 30px;margin:30px 0}
+  .findings{background:#F5F5F0;border:1px solid var(--rule);border-radius: 0;padding:22px 30px;margin:30px 0}
   .findings ul{margin:0;padding-left:20px} .findings li{margin-bottom:11px}
-  .note{background:#fff;border:1px solid var(--rule);border-left:4px solid var(--teal);border-radius:8px;padding:14px 20px;font-size:14.5px;color:#444;font-family:'Helvetica Neue',Arial,sans-serif;margin:24px 0}
-  .footer{text-align:center;color:var(--soft);font-size:14px;margin-top:54px;font-family:'Helvetica Neue',Arial,sans-serif}
+  .note{background:#F5F5F0;border:1px solid var(--rule);border-left:4px solid var(--teal);border-radius: 0;padding:14px 20px;font-size:14.5px;color:#444;font-family:"IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;margin:24px 0}
+  .footer{text-align:center;color:var(--soft);font-size:14px;margin-top:54px;font-family:"IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif}
   @media(max-width:560px){h1{font-size:30px}.stats{grid-template-columns:1fr}.hero svg{height:190px}}
 </style>
 </head>
 <body>
-<a href="overview/" data-overview-link style="display:block;background:#1a1a2e;color:#FBF8F1;text-align:center;padding:11px 18px;font:600 14.5px/1.45 -apple-system,'Helvetica Neue',Arial,sans-serif;letter-spacing:.01em;text-decoration:none">Read the full writeup&nbsp;&rarr;</a>
+<a href="overview/" data-overview-link style="display:block;background:#1C1E1B;color:#EDEDE7;text-align:center;padding:11px 18px;font:600 14.5px/1.45 -apple-system,'Helvetica Neue',Arial,sans-serif;letter-spacing:.01em;text-decoration:none">Read the full writeup&nbsp;&rarr;</a>
 
 <div class="hero">
   <svg viewBox="0 0 760 260" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A pace curve staying flat then rising steeply past the 30 km mark">
     <defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c1c3d"/><stop offset="1" stop-color="#101025"/></linearGradient></defs>
     <rect width="760" height="260" fill="url(#bg)"/>
-    <rect x="520" y="40" width="180" height="180" fill="#E0567A" opacity="0.10"/>
+    <rect x="520" y="40" width="180" height="180" fill="#6E4A44" opacity="0.10"/>
     <g fill="none" stroke-width="4">
       <path d="M60 190 L180 188 L300 182 L420 168 L520 130 L600 96 L680 92" stroke="#5B4B8A"/>
     </g>
     <g fill="#5B4B8A"><circle cx="60" cy="190" r="5"/><circle cx="180" cy="188" r="5"/><circle cx="300" cy="182" r="5"/><circle cx="420" cy="168" r="5"/><circle cx="520" cy="130" r="5"/><circle cx="600" cy="96" r="5"/><circle cx="680" cy="92" r="5"/></g>
-    <line x1="520" y1="40" x2="520" y2="220" stroke="#D4A537" stroke-width="2" stroke-dasharray="7 6"/>
-    <g font-family="Helvetica Neue,Arial" fill="#cbb98a" font-size="15"><text x="120" y="215">steady early pace</text><text x="540" y="60" fill="#E0567A">the wall</text></g>
+    <line x1="520" y1="40" x2="520" y2="220" stroke="#8C3A1E" stroke-width="2" stroke-dasharray="7 6"/>
+    <g font-family="Helvetica Neue,Arial" fill="#cbb98a" font-size="15"><text x="120" y="215">steady early pace</text><text x="540" y="60" fill="#6E4A44">the wall</text></g>
   </svg>
 </div>
 <div class="container">
   <p class="kicker">Data story · 31,655 marathon finishers</p>
   <h1>Hitting the Wall</h1>
-  <p class="lede">Marathoners talk about "the wall" near 20 miles. Using every runner's 5-kilometre splits, I traced exactly where the field slows — and how hard.</p>
+  <p class="lede">Marathoners talk about "the wall" near 20 miles. Using every runner's 5-kilometre splits, I traced exactly where the field slows, and how hard.</p>
   <p class="byline">By Jeremy Lee</p>
 
   <div class="stats">
@@ -60,7 +66,7 @@
   </div>
 
   <h2>What "the wall" actually looks like</h2>
-  <p>Every finisher of the 2014 Boston Marathon crossed timing mats every 5 km. Converting those to a running pace and averaging across the field, a very clear shape appears: pace holds nearly flat for the first 20 km, drifts up gently to 25 km, and then <strong>climbs steeply from about 30 km onward</strong> — the textbook "wall." By 35–40 km the median runner is moving roughly a minute per kilometre slower than they were at the start.</p>
+  <p>Every finisher of the 2014 Boston Marathon crossed timing mats every 5 km. Converting those to a running pace and averaging across the field, a very clear shape appears: pace holds nearly flat for the first 20 km, drifts up gently to 25 km, and then <strong>climbs steeply from about 30 km onward</strong>. The textbook "wall." By 35–40 km the median runner is moving roughly a minute per kilometre slower than they were at the start.</p>
   <figure><img src="figures/01_decay_curve.png" alt="Median pace by distance, rising sharply after 30 km"><figcaption>Median pace through the race. Flat early, then a steep climb (slowdown) past ~30 km.</figcaption></figure>
 
   <h2>It hits slower runners far harder</h2>
@@ -69,12 +75,12 @@
 
   <h2>How bad is it, runner by runner?</h2>
   <p>Comparing each runner's 35–40 km pace to their steady 10–20 km pace, the median late slowdown is <strong>15%</strong>, but the tail is long: more than a quarter of the field slowed by over <strong>25%</strong> in the final stretch.</p>
-  <figure><img src="figures/03_wall_distribution.png" alt="Histogram of late-race slowdown across runners"><figcaption>Distribution of late-race slowdown. A long right tail — the people who truly hit the wall.</figcaption></figure>
+  <figure><img src="figures/03_wall_distribution.png" alt="Histogram of late-race slowdown across runners"><figcaption>Distribution of late-race slowdown. A long right tail: the people who truly hit the wall.</figcaption></figure>
 
   <div class="findings">
     <h3>The findings</h3>
     <ul>
-      <li>Pace stays flat to ~20 km, then climbs steeply from <strong>~30 km</strong> — the wall is real and shows up in the average.</li>
+      <li>Pace stays flat to ~20 km, then climbs steeply from <strong>~30 km</strong>. The wall is real and shows up in the average.</li>
       <li>The median runner's <strong>late pace was 15% slower</strong> than their mid-race pace; <strong>27%</strong> slowed by more than 25%.</li>
       <li>Slowdown scales with finish time: elites stay nearly flat, while 4:30+ runners slow 30%+ late on.</li>
       <li>The field's median pace drifts from ~5.0 to ~6.1 min/km between the early kilometres and 35–40 km.</li>
@@ -82,7 +88,7 @@
   </div>
 
   <h2>The takeaway</h2>
-  <p>"The wall" isn't a metaphor — it's a measurable bend in the pace curve that arrives, on average, right around 30 km. And because the bend is so much gentler for fitter, more even-paced runners, the practical lesson lines up with every coach's advice: train your endurance, and start conservatively, because the last 12 km is where marathons are won and lost. (See also my companion study, <a href="https://lyhjeremy.github.io/marathon-negative-split-myth/">The Negative-Split Myth</a>.)</p>
+  <p>"The wall" isn't a metaphor. It's a measurable bend in the pace curve that arrives, on average, right around 30 km. And because the bend is so much gentler for fitter, more even-paced runners, the practical lesson lines up with every coach's advice: train your endurance, and start conservatively, because the last 12 km is where marathons are won and lost. (See also my companion study, <a href="https://lyhjeremy.github.io/marathon-negative-split-myth/">The Negative-Split Myth</a>.)</p>
 
   <div class="note"><strong>Data &amp; method:</strong> Official 2014 Boston Marathon results (public mirror: <a href="https://github.com/llimllib/bostonmarathon">llimllib/bostonmarathon</a>), 31,655 finishers with complete 5K splits. Each segment's pace = segment time ÷ segment distance. Reproduce with <code>fetch_data.py</code> + <code>analyze.py</code> in the <a href="https://github.com/lyhjeremy/marathon-pacing-decay">repo</a>. Boston's net-downhill start flatters early pace, so the real-world slowdown is, if anything, understated here.</div>
 
