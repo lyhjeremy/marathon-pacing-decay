@@ -3,55 +3,57 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Hitting the Wall, where a marathon field actually slows down</title>
-<meta name="description" content="Per-5K splits from 31,655 Boston Marathon finishers. Pace holds flat to 20 km, then climbs steeply from about 30 km. The median runner's late pace was 15% slower than mid-race." />
-<meta name="theme-color" content="#EDEDE7" />
+<title>Hitting the Wall: where a marathon field slows down</title>
+<meta name="description" content="Per-5K splits from 31,655 Boston Marathon finishers. Pace holds nearly flat to 20 km and climbs steeply from about 30 km. The median runner's 35 to 40 km pace was 15% slower than their 10 to 20 km pace." />
+<meta name="theme-color" content="#ECEBE6" />
 <meta property="og:title" content="Hitting the Wall" />
-<meta property="og:description" content="The wall is not a metaphor. Traced 5 km at a time across 31,655 finishers, it has a location: about 30 km." />
+<meta property="og:description" content="Median pace for 31,655 Boston finishers, 5 km at a time. The sharp rise comes between 25 and 35 km." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://lyhjeremy.github.io/marathon-pacing-decay/overview/" />
+<link href="" rel="stylesheet" />
 <style>
-@font-face{font-family:"Source Serif 4";src:url("../fonts/SourceSerif4-400.woff2")format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"Source Serif 4";src:url("../fonts/SourceSerif4-600.woff2")format("woff2");font-weight:600;font-display:swap}
-@font-face{font-family:"IBM Plex Sans";src:url("../fonts/IBMPlexSans-400.woff2")format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"IBM Plex Sans";src:url("../fonts/IBMPlexSans-600.woff2")format("woff2");font-weight:600;font-display:swap}
-@font-face{font-family:"IBM Plex Mono";src:url("../fonts/IBMPlexMono-400.woff2")format("woff2");font-weight:400;font-display:swap}
-
   :root {
-    --paper: #EDEDE7;
-    --card: #F5F5F0;
-    --plate: #F5F5F0;
-    --ink: #1C1E1B;
-    --ink2: #3d3d55;
-    --muted: #52564E;
-    --rule: #C6C7BF;
-    --accent: #7A5A1E;
-    --accent2: #C33E60;
-    --link: #2C5852;
-    --serif: Georgia, 'Iowan Old Style', 'Times New Roman', serif;
-    --sans: 'Source Sans 3', -apple-system, system-ui, sans-serif;
-    --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', monospace;
-    --shadow: 0 1px 2px rgba(26,26,46,.05), 0 10px 34px rgba(26,26,46,.07);
+    --paper: #ECEBE6;
+    --card: #F4F3EF;
+    --plate: #F4F3EF;
+    --ink: #1A1C1E;
+    --ink2: #4E535A;
+    --muted: #4E535A;
+    --rule: #C5C6C4;
+    --accent: #94462A;
+    --accent2: #1F4A72;
+    --link: #94462A;
+    --serif: "Source Serif 4", "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+    --sans: "IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --mono: "IBM Plex Mono", "SF Mono", Menlo, Consolas, monospace;
+    --display: "Barlow Condensed", "Arial Narrow", sans-serif;
+    --edge: #73777C;
     --spine:  92px;
     --col:    min(100% - 2.6rem, 62rem);
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --paper: #14141f;
-      --card: #1c1c2a;
-      --plate: #f7f4ec;
-      --ink: #F2EFE6;
-      --ink2: #C9C4B6;
-      --muted: #918B7D;
-      --rule: #33313f;
-      --accent: #E3BC5E;
-      --accent2: #E8748F;
-      --link: #3FB4B9;
-      --shadow: 0 1px 2px rgba(0,0,0,.32), 0 10px 34px rgba(0,0,0,.4);
+      --paper: #17191C;
+      --card: #202327;
+      --plate: #202327;
+      --ink: #E4E5E3;
+      --ink2: #A3A8AE;
+      --muted: #A3A8AE;
+      --rule: #383C41;
+      --accent: #D9906C;
+      --accent2: #7FA8D3;
+      --link: #D9906C;
+      --edge: #6B7076;
     }
   }
 
-  * { box-sizing: border-box; }
+  @font-face{font-family:"Source Serif 4";src:url("../fonts/SourceSerif4-400.woff2")format("woff2");font-weight:400;font-display:swap}
+  @font-face{font-family:"Source Serif 4";src:url("../fonts/SourceSerif4-600.woff2")format("woff2");font-weight:600;font-display:swap}
+  @font-face{font-family:"IBM Plex Sans";src:url("../fonts/IBMPlexSans-400.woff2")format("woff2");font-weight:400;font-display:swap}
+  @font-face{font-family:"IBM Plex Sans";src:url("../fonts/IBMPlexSans-600.woff2")format("woff2");font-weight:600;font-display:swap}
+  @font-face{font-family:"IBM Plex Mono";src:url("../fonts/IBMPlexMono-400.woff2")format("woff2");font-weight:400;font-display:swap}
+
+  * { box-sizing: border-box; border-radius: 0; }
   html { scroll-behavior: smooth; }
   body {
     margin: 0; background: var(--paper); color: var(--ink);
@@ -210,53 +212,85 @@
     html { scroll-behavior: auto; }
     .btn { }
   }
+  @font-face{font-family:"Barlow Condensed";src:url("../fonts/BarlowCondensed-600.woff2")format("woff2");font-weight:600;font-style:normal;font-display:swap}
+  @font-face{font-family:"Barlow Condensed";src:url("../fonts/BarlowCondensed-700.woff2")format("woff2");font-weight:700;font-style:normal;font-display:swap}
 
+  .btn:hover { transform: none; background: var(--accent); border-color: var(--accent); color: var(--paper); }
+  .pull { border: 1px solid var(--edge); border-left: 1px solid var(--edge); background: transparent; }
+  .term { background: var(--card); color: var(--ink); border: 1px solid var(--rule); }
+  .term .c { color: var(--muted); } .term .g { color: var(--accent2); } .term .y { color: var(--accent); }
+  .logo, .hero h1, h2, .claim .n, .bignum { font-family: var(--display); }
+
+  /* Road: a race-day bib and the painted course line. Condensed caps, split-table numbers. */
+  body { border-top: 6px solid var(--accent2); }
+  .hero h1 { font-weight: 700; text-transform: uppercase; letter-spacing: -.01em; line-height: .95;
+             font-size: clamp(46px, 8.4vw, 104px); max-width: 15ch; }
+  h2 { font-weight: 600; letter-spacing: -.005em; font-size: clamp(30px, 4.2vw, 44px); line-height: 1.02; }
+  .kicker { font-family: var(--mono); font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+  .claim .n { font-weight: 700; font-size: 56px; letter-spacing: 0; }
+  .bignum { font-weight: 700; letter-spacing: -.01em; }
+  .route::before { width: 0; border-left: 3px dashed var(--accent2); background: none; }
+  .stop::before { border-radius: 0; width: 18px; height: 18px; left: calc(var(--spine) / 2 - 7.5px);
+                  border: 3px solid var(--accent2); }
+  .stop .eyebrow { color: var(--accent2); }
+
+
+  .sheet { margin-top: 26px; overflow-x: auto; border-top: 3px solid var(--ink); border-bottom: 3px solid var(--ink); }
+  .sheet table { min-width: 520px; font-family: var(--mono); font-size: 14.5px; background: transparent; }
+  .sheet caption { caption-side: top; text-align: left; font: 700 20px/1.2 var(--display); text-transform: uppercase; letter-spacing: .03em; padding: 12px 0 10px; color: var(--ink); }
+  .sheet th { font-family: var(--mono); border-bottom: 1px solid var(--ink); padding: 8px 12px; }
+  .sheet td { padding: 9px 12px; border-bottom: 1px dotted var(--edge); color: var(--ink); }
+  .sheet td.num, .sheet th.num { text-align: right; }
+  .sheet tr.wall td { background: color-mix(in srgb, var(--accent) 12%, transparent); font-weight: 600; }
+  .sheet tr.wall td:first-child { color: var(--accent); }
+  .sheet .bar { display: inline-block; height: 9px; background: var(--accent2); vertical-align: middle; }
+  .sheet tr.wall .bar { background: var(--accent); }
+  .sheet-note { font-family: var(--sans); font-size: 14px; color: var(--muted); margin-top: 10px; }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header class="masthead">
     <div class="logo"><span class="dot" aria-hidden="true"></span>Hitting the Wall</div>
-    <div class="tagline">the pacing-decay curve, 5 km at a time</div>
+    <div class="tagline">median pace for a whole marathon field, 5 km at a time</div>
   </header>
 
   <section class="hero">
-    <p class="kicker">Runners talk about the wall like weather.</p>
-    <h1>It has a location. About 30 km.</h1>
+    <p class="kicker">Boston Marathon 2014 · 31,655 finishers</p>
+    <h1>The field slows hardest between 25 and 35 km</h1>
 
     <p class="hero-sub">
-      Every marathoner knows the feeling of the race turning on them, and nobody
-      agrees on where it happens. Boston records a timing mat every 5 km, so for
-      <strong>31,655 finishers</strong> the question is a measurement rather than
-      an argument. Pace holds nearly flat to 20 km, drifts through 25, and then
-      climbs steeply from <strong>30 km</strong> to the line.
+      Boston records a timing mat every 5 km, so the location of "the wall" can be
+      measured instead of argued about. Across <strong>31,655 finishers</strong>,
+      median pace holds nearly flat to 20 km, drifts through 25 km, then climbs
+      steeply into 30 km and stays high to the finish.
     </p>
 
     <div class="cta-row">
-      <a class="btn btn-primary" href="../">Read the short version</a>
-      <a class="textlink" href="https://github.com/lyhjeremy/marathon-pacing-decay">or the code and data</a>
+      <a class="btn btn-primary" href="../">Back to the summary</a>
+      <a class="textlink" href="https://github.com/lyhjeremy/marathon-pacing-decay">Code and data on GitHub</a>
     </div>
 
     <div class="claims">
       <div class="claim">
-        <div class="n">30 km</div>
-        <p>where the curve turns. Before it the field is holding pace; after it
-           the whole distribution bends upward together.</p>
+        <div class="n">+13%</div>
+        <p>median pace at 25 to 30 km against the settled 5 to 10 km pace. One
+           segment earlier it was +6%, one segment later +19%.</p>
       </div>
       <div class="claim">
         <div class="n">15%</div>
-        <p>median late slowdown, comparing 35–40 km pace against the runner's own
-           10–20 km pace. Their own early self is the control.</p>
+        <p>median late slowdown per runner: their own 35 to 40 km pace against their
+           own 10 to 20 km pace.</p>
       </div>
       <div class="claim">
         <div class="n">27%</div>
-        <p>of the field slowed by more than a quarter. Not a rare blow-up, better
-           than one runner in four.</p>
+        <p>of finishers slowed by more than 25% on that comparison, slightly more than
+           one runner in four.</p>
       </div>
       <div class="claim">
-        <div class="n">5.0 → 6.1</div>
-        <p>min/km, the field's median pace from the first segment to the last. A
-           whole minute per kilometre given away.</p>
+        <div class="n">5:01 to 6:05</div>
+        <p>median pace per km in the first segment and in the slowest one, 35 to
+           40 km.</p>
       </div>
     </div>
   </section>
@@ -267,139 +301,156 @@
 
   <section class="stop">
     <p class="eyebrow">Start · the question</p>
-    <h2>Everyone names a different mile</h2>
+    <h2>Runners name different miles</h2>
     <p>
-      Ask ten marathon runners where the wall is and you will get mile 18, mile
-      20, mile 22, and someone insisting it is entirely mental. The disagreement
-      survives because most people only have their own races to go on, and a
-      handful of races is not enough to see a shape.
+      Ask marathoners where the wall is and you hear mile 18, mile 20 or mile 22.
+      Each runner has a handful of races to go on, which is too few to see a
+      shape. A whole field is enough.
     </p>
     <p>
-      Boston's timing mats remove the guesswork. Every finisher leaves a
-      cumulative time at 5, 10, 20, 25, 30, 35 and 40 km, plus the finish. Divide
-      each segment by its distance and you have that runner's pace through the
-      race. Do it for the whole field and the average shape of a marathon appears.
+      Every Boston finisher leaves a cumulative time at 5, 10, 20, 25, 30, 35 and
+      40 km and at the finish. Each segment's time divided by its length is that
+      runner's pace through it. The median across the field, segment by segment,
+      is the average shape of the race.
     </p>
   </section>
 
   <section class="stop stop--key">
-    <p class="eyebrow">↓ the curve</p>
+    <p class="eyebrow">The results sheet</p>
+    <h2>Eight segments, one corner</h2>
+    <p>
+      These are the field's median paces as <code>analyze.py</code> writes them to
+      <code>tables/segment_pace.csv</code>. The change column compares each
+      segment with the 5 to 10 km pace, by which point the start-line crowding
+      has cleared.
+    </p>
+    <div class="sheet">
+      <table>
+        <caption>Boston 2014 · median pace by segment</caption>
+        <thead>
+          <tr><th>Segment</th><th class="num">Median pace</th><th class="num">min/km</th><th class="num">vs 5–10 km</th><th>Change</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>0–5 km</td><td class="num">5:01</td><td class="num">5.014</td><td class="num">−0.6%</td><td><span class="bar" style="width:1px"></span></td></tr>
+          <tr><td>5–10 km</td><td class="num">5:03</td><td class="num">5.044</td><td class="num">0.0%</td><td><span class="bar" style="width:1px"></span></td></tr>
+          <tr><td>10–20 km</td><td class="num">5:10</td><td class="num">5.166</td><td class="num">+2.4%</td><td><span class="bar" style="width:12px"></span></td></tr>
+          <tr><td>20–25 km</td><td class="num">5:21</td><td class="num">5.350</td><td class="num">+6.1%</td><td><span class="bar" style="width:30px"></span></td></tr>
+          <tr class="wall"><td>25–30 km</td><td class="num">5:42</td><td class="num">5.694</td><td class="num">+12.9%</td><td><span class="bar" style="width:64px"></span></td></tr>
+          <tr class="wall"><td>30–35 km</td><td class="num">6:01</td><td class="num">6.024</td><td class="num">+19.4%</td><td><span class="bar" style="width:97px"></span></td></tr>
+          <tr><td>35–40 km</td><td class="num">6:05</td><td class="num">6.086</td><td class="num">+20.7%</td><td><span class="bar" style="width:103px"></span></td></tr>
+          <tr><td>40 km–finish</td><td class="num">6:00</td><td class="num">6.000</td><td class="num">+19.0%</td><td><span class="bar" style="width:95px"></span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="sheet-note">The two highlighted rows hold most of the climb: 13.4 of the 20.7 points between the 5 to 10 km pace and the slowest segment.</p>
+  </section>
+
+  <section class="stop">
+    <p class="eyebrow">The curve</p>
     <h2>Flat, then a corner</h2>
     <p>
-      The field's median pace barely moves through the first 20 km. It drifts
-      gently to 25. From <strong>30 km onward it climbs steeply</strong> and does
-      not recover. That corner is the thing runners are describing when they say
-      the wall, and it sits in the same place for the field as a whole.
-    </p>
-    <p>
-      The important detail is that the early part really is flat. This is not a
-      curve that slopes gradually from the gun, which is what you would expect if
-      fatigue simply accumulated. Something changes around 30 km.
+      Plotted against distance, the same numbers make a corner. The first 20 km
+      gain only 2.4%. If fatigue simply built up from the gun, the line would
+      slope steadily from the start, and it doesn't. Something changes after
+      25 km, and by 30 km the field has settled into a pace about a minute per
+      kilometer slower than where it began.
     </p>
     <figure>
       <div class="plate">
         <img width="1680" height="960" src="../figures/01_decay_curve.png" fetchpriority="high"
-          alt="Line chart of the field's median pace across each 5 km segment. The line is nearly flat from 5 km to 20 km, rises slightly to 25 km, then climbs sharply from 30 km through to the finish." />
+          alt="Line chart of the field's median pace by distance. The line sits near 5.0 min/km through 10 km, rises gently to 5.35 by 20 to 25 km, then steeply to about 6.0 at 30 to 35 km and 6.1 at 35 to 40 km." />
       </div>
-      <figcaption>Median pace per segment across the field. Flat to 20 km, then the corner.</figcaption>
+      <figcaption>Median pace per segment, from <code>analyze.py</code>. The script draws its shaded "wall" band from 32 km; in the table the steepest rise is between 25 and 35 km.</figcaption>
     </figure>
   </section>
 
   <section class="stop">
-    <p class="eyebrow">↓ who it happens to</p>
-    <h2>The corner is much sharper at the back</h2>
+    <p class="eyebrow">Who it happens to</p>
+    <h2>The corner is sharper at the back</h2>
     <p>
-      Split the field by finish time and the same curve appears at very different
-      severities. Sub-3-hour runners stay close to flat the whole way. Runners
-      finishing after 4:30 lose <strong>30% or more</strong> in the closing
-      segments. The wall is not a binary event that either happens or does not;
-      it is a slope that gets steeper the further back you look.
+      Split by finish time and measured against each group's own 5 to 10 km pace,
+      the same shape appears at different strengths. Runners under 3:00 stay close
+      to flat. Runners finishing after 4:30 are <strong>30% or more</strong> slower
+      in the closing segments. The wall is a slope that gets steeper further back
+      in the field.
     </p>
     <figure>
       <div class="plate">
         <img width="1680" height="960" src="../figures/02_decay_by_group.png" loading="lazy"
-          alt="Multiple pace curves, one per finish-time group, all flat early and diverging after 30 km. The fastest group stays nearly level while the slowest groups rise steeply." />
+          alt="Five slowdown curves, one per finish-time group from sub-3:00 to over 4:30. All are flat early and separate after 25 km; the sub-3:00 group stays near zero while the over-4:30 group rises past 30 percent." />
       </div>
-      <figcaption>The same shape at every ability, with the back of the field bending hardest.</figcaption>
+      <figcaption>Slowdown against each group's own early pace, five finish-time groups.</figcaption>
     </figure>
   </section>
 
   <section class="stop stop--warn">
-    <p class="eyebrow">↓ the spread</p>
+    <p class="eyebrow">Runner by runner</p>
     <h2>A quarter of the field loses a quarter of its pace</h2>
 
     <div class="bignum">27%</div>
-    <p class="bignum-note">of finishers slowed by more than 25% in the closing kilometres.</p>
+    <p class="bignum-note">of finishers ran 35 to 40 km more than 25% slower than 10 to 20 km.</p>
 
     <p>
-      The distribution of late slowdown is wide and long-tailed. The median is
-      15%, but the right tail runs far past it. This matters for how you read the
-      median: it is not that most runners fade a little, it is that a substantial
-      minority fall apart and drag the whole picture with them.
+      The per-runner slowdown has a median of 15% and a long right tail. The
+      median hides a split: many runners fade by a modest amount, and a large
+      minority lose far more.
     </p>
     <figure>
       <div class="plate">
         <img width="1600" height="919" src="../figures/03_wall_distribution.png" loading="lazy"
-          alt="Histogram of late-race slowdown across the field, peaking in the low teens of percent with a long right tail extending past 40 percent." />
+          alt="Histogram of each runner's late slowdown. Most runners fall between 0 and 30 percent, the median line is at 15 percent, and the tail runs past 50 percent." />
       </div>
-      <figcaption>Late slowdown across the field. The median is 15%; the tail is where the wall lives.</figcaption>
+      <figcaption>35 to 40 km pace against 10 to 20 km pace, one count per runner.</figcaption>
     </figure>
   </section>
 
   <section class="stop">
-    <p class="eyebrow">↓ what this cannot tell you</p>
-    <h2>A location, not a cause</h2>
+    <p class="eyebrow">Limitations</p>
+    <h2>What this doesn't show</h2>
     <p>
-      This measures where the slowing happens, not why. Glycogen depletion,
-      muscle damage, heat, and simply starting too fast all produce a late-race
-      fade, and split data cannot separate them. Anyone claiming this chart proves
-      a mechanism is reading more into it than is there.
+      Split data locates the slowdown. It can't separate the causes: glycogen
+      depletion, muscle damage, heat and a too-fast start all produce a late fade.
     </p>
     <p>
-      Boston's course is also its own argument. The Newton hills run from roughly
-      16 to 21 miles, which is 26–34 km, landing squarely on the corner. Some of
-      the sharpness at 30 km is Boston's terrain rather than human physiology. A
-      flat course would likely still show the corner, but softer and perhaps a
-      little later.
+      Boston's course is part of the result. The Newton hills run from about 16 to
+      21 miles, or 26 to 34 km, which is where the corner is. The net-downhill
+      opening also makes early pace look quicker than it would on a flat course.
+      A flat course would probably show a softer corner, but this study has no
+      flat-course data to test that.
     </p>
     <p>
-      And this is one edition of one race. The companion study on
+      It is one edition of one race. The companion study on
       <a href="https://lyhjeremy.github.io/marathon-negative-split-myth/">negative splits</a>
-      uses the same field, so the two share whatever is peculiar about that day.
+      uses the same field, so the two share whatever was unusual about that day.
     </p>
   </section>
 
   <section class="stop">
-    <p class="eyebrow">↓ so what</p>
-    <h2>The fix happens before 30 km</h2>
+    <p class="eyebrow">For a runner</p>
+    <h2>The damage shows after 25 km and starts earlier</h2>
     <p>
-      The flat early section is the part worth staring at. By the time the curve
-      turns, the race has already been decided by choices made in the first two
-      hours. The runners who stay flat late are the ones who were not really at
-      their limit early.
+      The groups that stay flat late are the ones whose early pace left them
+      something in reserve. The data shows the association, not the mechanism,
+      but for a runner the reading is the usual one: the first 25 km are where a
+      runner chooses how the last 12 go.
     </p>
-    <div class="pull">
-      <p>You cannot pace the last 12 km. You can only pace the first 30 and find
-         out what you left yourself.</p>
-      <span class="who">What the curve is actually saying</span>
-    </div>
   </section>
 
   <section class="stop stop--end">
     <p class="eyebrow">Finish · how it was built</p>
     <h2>Where the numbers come from</h2>
     <p>
-      Two scripts, fully reproducible. <code>fetch_data.py</code> downloads the
-      results, <code>analyze.py</code> writes every figure and both tables here.
-      Raw data is git-ignored; the outputs are committed.
+      Two scripts. <code>fetch_data.py</code> downloads the results and
+      <code>analyze.py</code> writes every figure and both tables. Raw data is
+      git-ignored; the outputs are committed.
     </p>
     <dl class="specs">
       <div class="spec"><dt>Data</dt><dd>Official 2014 Boston Marathon results, via the public <a href="https://github.com/llimllib/bostonmarathon">llimllib/bostonmarathon</a> mirror</dd></div>
-      <div class="spec"><dt>Sample</dt><dd>31,655 finishers with a complete set of 5 km splits</dd></div>
-      <div class="spec"><dt>Splits</dt><dd>Cumulative times at 5, 10, 20, 25, 30, 35, 40 km and finish; segment pace = time ÷ distance</dd></div>
-      <div class="spec"><dt>Late slowdown</dt><dd>35–40 km pace measured against that same runner's 10–20 km pace</dd></div>
-      <div class="spec"><dt>Built with</dt><dd>Python, pandas, matplotlib</dd></div>
-      <div class="spec"><dt>Companion study</dt><dd><a href="https://lyhjeremy.github.io/marathon-negative-split-myth/">The Negative-Split Myth</a>, on the same field split in two halves</dd></div>
+      <div class="spec"><dt>Sample</dt><dd>31,655 finishers with every split present and strictly increasing</dd></div>
+      <div class="spec"><dt>Splits</dt><dd>Cumulative times at 5, 10, 20, 25, 30, 35, 40 km and finish; segment pace is time divided by distance</dd></div>
+      <div class="spec"><dt>Late slowdown</dt><dd>35 to 40 km pace against the same runner's 10 to 20 km pace</dd></div>
+      <div class="spec"><dt>Built with</dt><dd>Python, pandas, NumPy, matplotlib</dd></div>
+      <div class="spec"><dt>Companion study</dt><dd><a href="https://lyhjeremy.github.io/marathon-negative-split-myth/">The Negative-Split Myth</a>, the same field split into two halves</dd></div>
     </dl>
   </section>
 
@@ -408,18 +459,19 @@
 
 <div class="wrap">
   <section class="close">
-    <h2>The wall is at 30 km, and it is built earlier</h2>
+    <h2>Median pace: 5:03 at 10 km, 6:01 by 35 km</h2>
     <div class="cta-row">
-      <a class="btn btn-primary" href="../">Read the short version</a>
-      <a class="textlink" href="https://github.com/lyhjeremy/marathon-pacing-decay">or the code and data</a>
+      <a class="btn btn-primary" href="../">Back to the summary</a>
+      <a class="textlink" href="https://github.com/lyhjeremy/marathon-pacing-decay">Code and data on GitHub</a>
     </div>
   </section>
 
   <footer>
     <p>
       Hitting the Wall ·
-      <a href="../">Story</a> ·
+      <a href="../">Summary page</a> ·
       <a href="https://github.com/lyhjeremy/marathon-pacing-decay">Source</a> ·
+      <a href="https://github.com/lyhjeremy/marathon-pacing-decay/blob/main/writeup.md">Write-up (markdown)</a> ·
       MIT © 2026 Jeremy Lee
     </p>
     <p>Results data © the Boston Athletic Association, via a public mirror.</p>

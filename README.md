@@ -1,33 +1,69 @@
 # Hitting the Wall: the marathon pacing-decay curve
 
+Where a marathon field slows down, measured from the 5 km splits of 31,655 finishers of the 2014 Boston Marathon.
+
+[Live site](https://lyhjeremy.github.io/marathon-pacing-decay/) · [Write-up](https://lyhjeremy.github.io/marathon-pacing-decay/overview/)
+
 Design and copy follow [these standards](https://github.com/lyhjeremy/lyhjeremy/blob/main/DESIGN_STANDARDS.md).
 
-Using per-5K splits from **31,655** finishers of the 2014 Boston Marathon, this
-traces exactly where runners slow down. Pace holds flat to ~20 km, then climbs
-steeply from about **30 km.** The wall. The median runner's late pace was **15%**
-slower than mid-race, and **27%** slowed by more than 25%.
+## Results
 
-> **Read the story:** https://lyhjeremy.github.io/marathon-pacing-decay/
-> **In depth:** https://lyhjeremy.github.io/marathon-pacing-decay/overview/
+- Median pace is close to flat through 20 km (+2.4% against the 5 to 10 km pace), then rises to +12.9% at 25 to 30 km and +19.4% at 30 to 35 km.
+- The median runner's 35 to 40 km pace was **15%** slower than their own 10 to 20 km pace.
+- **27%** of finishers slowed by more than 25% on that comparison.
+- Runners under 3:00 stay close to flat; runners over 4:30 slow by 30% or more late in the race.
 
-## Findings
-- Pace is flat to ~20 km, drifts up to 25 km, then climbs steeply from **~30 km**.
-- Median late slowdown (35–40 km vs 10–20 km pace) is **15%**; **27%** slowed >25%.
-- The effect scales with finish time: sub-3h runners stay nearly flat; 4:30+ runners slow 30%+ late.
-- Field median pace drifts from ~5.0 to ~6.1 min/km across the race.
+![Median pace by distance for the 2014 Boston field: near 5.0 min/km through 10 km, rising steeply to about 6.1 min/km between 30 and 40 km](figures/01_decay_curve.png)
 
-## Reproduce
+| Segment | Median pace (min/km) | vs 5 to 10 km |
+|---|---|---|
+| 0–5 km | 5.01 | −0.6% |
+| 5–10 km | 5.04 | 0.0% |
+| 10–20 km | 5.17 | +2.4% |
+| 20–25 km | 5.35 | +6.1% |
+| 25–30 km | 5.69 | +12.9% |
+| 30–35 km | 6.02 | +19.4% |
+| 35–40 km | 6.09 | +20.7% |
+| 40 km–finish | 6.00 | +19.0% |
+
+From `tables/segment_pace.csv`.
+
+## Method
+
+- Cumulative split times (decimal minutes) at 5, 10, 20, 25, 30, 35 and 40 km and the finish. Runners are kept only if every split is present and strictly increasing.
+- Segment pace is segment time divided by segment distance. The field curve is the median pace per segment.
+- Late slowdown is a within-runner ratio: each runner's 35 to 40 km pace against their own 10 to 20 km pace, so each runner is their own baseline.
+- Finish-time groups (sub-3:00 through over 4:30) are compared against each group's own 5 to 10 km pace.
+
+Stack: Python, pandas, NumPy, matplotlib.
+
+## How to run
+
 ```bash
 pip install -r requirements.txt
-python fetch_data.py     # downloads 2014 Boston results to data/
+python fetch_data.py     # downloads 2014 Boston results to data/ (git-ignored)
 python analyze.py        # writes figures/ and tables/
 ```
 
+## Repo layout
+
+| Path | Contents |
+|---|---|
+| `fetch_data.py` | Downloads the 2014 results CSV |
+| `analyze.py` | Computes segment paces, writes the three figures and two tables |
+| `tables/` | `segment_pace.csv` (median pace per segment), `summary.csv` (sample size, slowdown metrics) |
+| `figures/` | Pace curve, curves by finish-time group, slowdown histogram |
+| `index.html`, `overview/` | The GitHub Pages site |
+| `writeup.md` | Short write-up |
+
+## Limitations
+
+Split data shows where the field slows and can't separate causes such as glycogen depletion, muscle damage, heat or a fast start. Boston's Newton hills (about 26 to 34 km) sit on the steepest part of the curve, and the net-downhill opening makes early pace look quicker, so some of the shape belongs to the course. This is one race in one year. `analyze.py` labels its figure's wall at 32 km; the table puts the steepest rise between 25 and 35 km.
+
 ## Data
-Official 2014 Boston Marathon results via [llimllib/bostonmarathon](https://github.com/llimllib/bostonmarathon).
-Cumulative split times (decimal minutes) at 5/10/20/25/30/35/40 km and finish;
-each segment's pace = time ÷ distance. Raw data is downloaded by `fetch_data.py`
-and git-ignored. Companion study: [The Negative-Split Myth](https://github.com/lyhjeremy/marathon-negative-split-myth).
+
+Official 2014 Boston Marathon results via the public mirror [llimllib/bostonmarathon](https://github.com/llimllib/bostonmarathon). Companion study on the same field: [The Negative-Split Myth](https://github.com/lyhjeremy/marathon-negative-split-myth).
 
 ## License
+
 [MIT](LICENSE) © 2026 Jeremy Lee
