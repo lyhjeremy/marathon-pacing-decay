@@ -1,6 +1,6 @@
 # Hitting the Wall: the marathon pacing-decay curve
 
-Where a marathon field slows down, measured from the 5 km splits of 31,655 finishers of the 2014 Boston Marathon.
+Where does a marathon field slow down? This repo measures it from the 5 km splits of 31,655 finishers of the 2014 Boston Marathon; the answer is a bend that starts after 25 km.
 
 [Live site](https://lyhjeremy.github.io/marathon-pacing-decay/) · [Write-up](https://lyhjeremy.github.io/marathon-pacing-decay/overview/)
 
@@ -58,7 +58,7 @@ python analyze.py        # writes figures/ and tables/
 
 ## Limitations
 
-Split data shows where the field slows and can't separate causes such as glycogen depletion, muscle damage, heat or a fast start. Boston's Newton hills (about 26 to 34 km) sit on the steepest part of the curve, and the net-downhill opening makes early pace look quicker, so some of the shape belongs to the course. This is one race in one year. `analyze.py` labels its figure's wall at 32 km; the table puts the steepest rise between 25 and 35 km.
+Split data shows where the field slows but can't tell glycogen depletion, muscle damage, heat and a fast start apart as causes. Boston's Newton hills (about 26 to 34 km) sit on the steepest part of the curve, and the net-downhill opening makes early pace look quicker, so some of the shape belongs to the course. This is one race in one year. `analyze.py` labels its figure's wall at 32 km; the table puts the steepest rise between 25 and 35 km.
 
 ## Data
 
