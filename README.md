@@ -11,7 +11,9 @@ Design and copy follow [these standards](https://github.com/lyhjeremy/lyhjeremy/
 - Median pace is close to flat through 20 km (+2.4% against the 5 to 10 km pace), then rises to +12.9% at 25 to 30 km and +19.4% at 30 to 35 km.
 - The median runner's 35 to 40 km pace was **15%** slower than their own 10 to 20 km pace.
 - **27%** of finishers slowed by more than 25% on that comparison.
-- Runners under 3:00 stay close to flat; runners over 4:30 slow by 30% or more late in the race.
+- Against their own 5 to 10 km pace, runners under 3:00 end 8 to 9% slower; runners over 4:30 are 33 to 35% slower between 30 and 40 km.
+
+The [write-up](https://lyhjeremy.github.io/marathon-pacing-decay/overview/#plan) has a split card: enter a finish time and it shows the splits that Boston 2014 runners within the same 15 minutes ran, scaled to that time, next to even pace.
 
 ![Median pace by distance for the 2014 Boston field: near 5.0 min/km through 10 km, rising steeply to about 6.1 min/km between 30 and 40 km](figures/01_decay_curve.png)
 
@@ -43,6 +45,7 @@ Stack: Python, pandas, NumPy, matplotlib.
 pip install -r requirements.txt
 python fetch_data.py     # downloads 2014 Boston results to data/ (git-ignored)
 python analyze.py        # writes figures/ and tables/
+python export_web.py     # writes tables/web_pacing.json for the site's charts
 ```
 
 ## Repo layout
@@ -51,7 +54,8 @@ python analyze.py        # writes figures/ and tables/
 |---|---|
 | `fetch_data.py` | Downloads the 2014 results CSV |
 | `analyze.py` | Computes segment paces, writes the three figures and two tables |
-| `tables/` | `segment_pace.csv` (median pace per segment), `summary.csv` (sample size, slowdown metrics) |
+| `export_web.py` | Group and 15-minute band paces and the late-slowdown histogram for the site, using the same `load()` as `analyze.py` |
+| `tables/` | `segment_pace.csv` (median pace per segment), `summary.csv` (sample size, slowdown metrics), `web_pacing.json` (chart data) |
 | `figures/` | Pace curve, curves by finish-time group, slowdown histogram |
 | `index.html`, `overview/` | The GitHub Pages site |
 | `writeup.md` | Short write-up |

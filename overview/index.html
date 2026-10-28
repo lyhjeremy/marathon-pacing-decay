@@ -246,6 +246,46 @@
   .sheet .bar { display: inline-block; height: 9px; background: var(--accent2); vertical-align: middle; }
   .sheet tr.wall .bar { background: var(--accent); }
   .sheet-note { font-family: var(--sans); font-size: 14px; color: var(--muted); margin-top: 10px; }
+
+  .fig-title { font-family: var(--display); font-weight: 600; font-size: clamp(22px, 2.8vw, 28px); line-height: 1.1; margin: 0 0 4px; color: var(--ink); }
+  .seg { display: flex; flex-wrap: wrap; margin: 14px 0 12px; }
+  .seg button { font: 600 13.5px/1.2 var(--mono); padding: 8px 11px; border: 1px solid var(--edge); background: transparent; color: var(--ink); cursor: pointer; margin: 0 -1px -1px 0; }
+  .seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .pstrip { display: flex; height: 34px; border: 1px solid var(--edge); margin: 0 0 10px; }
+  .pstrip span { display: flex; align-items: center; justify-content: center; font: 600 12.5px/1 var(--mono); border-right: 1px solid var(--card); overflow: hidden; white-space: nowrap; }
+  .pstrip span:last-child { border-right: 0; }
+  @media (max-width: 640px) { .pstrip span { font-size: 11px; letter-spacing: -.02em; } }
+  .chart { border: 1px solid var(--rule); background: var(--card); padding: 10px 10px 4px; }
+  .chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .chart svg:focus { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .chart text { font-family: var(--mono); font-size: 12px; fill: var(--muted); }
+  .chart .grid { stroke: var(--rule); stroke-width: 1; }
+  .chart .band { fill: color-mix(in srgb, var(--accent2) 12%, transparent); }
+  .chart .ln { fill: none; stroke-linejoin: miter; }
+  .chart .ln.other { stroke: var(--edge); stroke-width: 1.3; opacity: .55; }
+  .chart .ln.field { stroke: var(--ink); stroke-width: 1.5; stroke-dasharray: 5 4; }
+  .chart .ln.on { stroke: var(--accent); stroke-width: 3.5; }
+  .chart .elab { font-family: var(--display); font-size: 13.5px; font-weight: 600; fill: var(--muted); }
+  .chart .elab.on { fill: var(--accent); font-size: 15px; }
+  .chart .b { fill: var(--accent2); } .chart .b.neg { fill: var(--accent); } .chart .b.on { fill: var(--ink); }
+  .chart .zero { stroke: var(--ink); stroke-width: 1.5; } .chart .med { stroke: var(--ink); stroke-width: 2; stroke-dasharray: 6 4; }
+  .chart .lab { fill: var(--ink); font-family: var(--display); font-size: 15px; font-weight: 600; } .chart .lab.neg { fill: var(--accent); }
+  .readout { font-family: var(--mono); font-size: 13.5px; color: var(--ink); min-height: 1.6em; margin: 10px 0 0; }
+  .bib { margin-top: 26px; border: 2px solid var(--ink); background: var(--card); }
+  .bib-head { display: flex; justify-content: space-between; gap: 4px 10px; flex-wrap: wrap; padding: 9px 16px; background: var(--ink); color: var(--paper); font: 600 12px/1.4 var(--mono); letter-spacing: .12em; text-transform: uppercase; }
+  .bib-body { padding: 18px 18px 16px; }
+  .field { font-family: var(--sans); margin-bottom: 16px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; }
+  .field label { font-size: 14.5px; font-weight: 600; color: var(--ink); flex-basis: 100%; }
+  .field input { font: 600 26px/1.1 var(--display); letter-spacing: .03em; width: 8.8ch; padding: 6px 10px; border: 1px solid var(--edge); background: var(--paper); color: var(--ink); }
+  .field .hint { font-size: 13px; color: var(--muted); }
+  .warn { color: var(--accent) !important; }
+  .plan-tw { margin-top: 12px; background: var(--paper); }
+  .plan-tw table { min-width: 0; font-family: var(--mono); font-size: 14px; }
+  .plan-tw th, .plan-tw td { padding: 7px 10px; }
+  .plan-tw .num { text-align: right; }
+  .plan-tw td { color: var(--ink); }
+  .plan-note { font-family: var(--sans); font-size: 15px; line-height: 1.5; color: var(--ink2); margin: 14px 0 0; }
+  @media (max-width: 640px) { .plan-tw table { font-size: 12px; } .plan-tw th, .plan-tw td { padding: 6px 5px; } .bib-body { padding: 14px 10px; } }
 </style>
 </head>
 <body>
@@ -260,14 +300,14 @@
     <h1>The field slows hardest between 25 and 35 km</h1>
 
     <p class="hero-sub">
-      Boston has a timing mat every 5 km, which turns the location of "the wall"
-      into something you can measure. Across <strong>31,655 finishers</strong>,
-      median pace holds nearly flat to 20 km, drifts through 25 km, then climbs
-      steeply into 30 km and stays high to the finish.
+      Boston has a timing mat every 5 km, so the location of "the wall" can be
+      measured. Across 31,655 finishers, median pace holds nearly flat to 20 km,
+      drifts through 25 km, then climbs steeply into 30 km and stays high to the
+      finish.
     </p>
 
     <div class="cta-row">
-      <a class="btn btn-primary" href="../">Back to the summary</a>
+      <a class="btn btn-primary" href="#plan">See how your finish time ran it</a>
       <a class="textlink" href="https://github.com/lyhjeremy/marathon-pacing-decay">Code and data on GitHub</a>
     </div>
 
@@ -304,14 +344,14 @@
     <h2>Runners name different miles</h2>
     <p>
       Ask marathoners where the wall is and you hear mile 18, mile 20 or mile 22.
-      Each runner has a handful of races to go on, too few to see a shape, but
-      one field of 31,655 is plenty.
+      One runner's handful of races is too few to show a shape. One field of
+      31,655 is plenty.
     </p>
     <p>
       Every Boston finisher leaves a cumulative time at 5, 10, 20, 25, 30, 35 and
       40 km and at the finish. Each segment's time divided by its length is that
-      runner's pace through it. The median across the field, segment by segment,
-      is the average shape of the race.
+      runner's pace through it, and the median across the field, segment by
+      segment, is the average shape of the race.
     </p>
   </section>
 
@@ -347,76 +387,98 @@
 
   <section class="stop">
     <p class="eyebrow">The curve</p>
-    <h2>Flat, then a corner</h2>
+    <h2>Flat, then a corner, sharper at the back</h2>
     <p>
-      Plotted against distance, the same numbers make a corner. The first 20 km
-      gain only 2.4%. If fatigue simply built up from the gun, the line would
-      slope steadily from the start, and it doesn't. Something changes after
-      25 km, and by 30 km the field has settled into a pace about a minute per
-      kilometer slower than where it began.
+      Drawn along the course, the field's numbers make a corner. The first 20 km
+      add only 2.4%. If fatigue built up evenly from the gun the line would slope
+      from the start, and it doesn't: something changes after 25 km.
     </p>
-    <figure>
-      <div class="plate">
-        <img width="1680" height="960" src="../figures/01_decay_curve.png" fetchpriority="high"
-          alt="Line chart of the field's median pace by distance. The line sits near 5.0 min/km through 10 km, rises gently to 5.35 by 20 to 25 km, then steeply to about 6.0 at 30 to 35 km and 6.1 at 35 to 40 km." />
-      </div>
-      <figcaption>Median pace per segment, from <code>analyze.py</code>. The script draws its shaded "wall" band from 32 km; in the table the steepest rise is between 25 and 35 km.</figcaption>
-    </figure>
-  </section>
-
-  <section class="stop">
-    <p class="eyebrow">Who it happens to</p>
-    <h2>The corner is sharper at the back</h2>
     <p>
-      Split by finish time and measured against each group's own 5 to 10 km pace,
-      the same shape appears at different strengths. Runners under 3:00 stay close
-      to flat. Runners finishing after 4:30 are <strong>30% or more</strong> slower
-      in the closing segments. The wall is a slope that gets steeper further back
-      in the field.
+      Pick a finish-time group to see the same corner at different strengths,
+      each measured against the group's own 5 to 10 km pace. Runners under 3:00
+      end about 8 to 9% slower than their early pace. Runners over 4:30 are 33 to
+      35% slower between 30 and 40 km, then ease to 25% over the last 2.2 km.
     </p>
-    <figure>
-      <div class="plate">
-        <img width="1680" height="960" src="../figures/02_decay_by_group.png" loading="lazy"
-          alt="Five slowdown curves, one per finish-time group from sub-3:00 to over 4:30. All are flat early and separate after 25 km; the sub-3:00 group stays near zero while the over-4:30 group rises past 30 percent." />
-      </div>
-      <figcaption>Slowdown against each group's own early pace, five finish-time groups.</figcaption>
+    <figure id="decay-fig">
+      <p class="fig-title" id="decay-title" aria-live="polite">&nbsp;</p>
+      <div class="seg" role="group" aria-label="Finish-time group" id="decay-seg"></div>
+      <div class="pstrip" id="pstrip" aria-hidden="true"></div>
+      <div class="chart" id="decay"></div>
+      <p class="readout" id="decay-read" aria-live="polite">Hover the chart, or focus it and use the arrow keys, to read a segment.</p>
+      <noscript>
+        <div class="plate"><img width="1680" height="960" src="../figures/02_decay_by_group.png" alt="Five slowdown curves, one per finish-time group from sub-3:00 to over 4:30. All are flat early and separate after 25 km; the sub-3:00 group ends near 9 percent while the over-4:30 group rises past 30 percent." /></div>
+      </noscript>
+      <figcaption>The strip is the course, 0 to 42.2 km, each timed segment shaded by
+        how much slower it was than the 5 to 10 km pace and labeled with the median
+        pace. The chart below plots the same numbers; the gray lines are the other
+        groups. Data from <code>tables/web_pacing.json</code>, written by
+        <code>export_web.py</code> with the same filters as <code>analyze.py</code>.</figcaption>
     </figure>
   </section>
 
   <section class="stop stop--warn">
     <p class="eyebrow">Runner by runner</p>
     <h2>A quarter of the field loses a quarter of its pace</h2>
-
-    <div class="bignum">27%</div>
-    <p class="bignum-note">of finishers ran 35 to 40 km more than 25% slower than 10 to 20 km.</p>
-
     <p>
-      The per-runner slowdown has a median of 15% and a long right tail. The
-      median hides a split: many runners fade by a modest amount, and a large
-      minority lose far more.
+      Compare each runner with themselves, 35 to 40 km pace against 10 to 20 km
+      pace, and the median slowdown is 15%. The distribution has a long right tail:
+      27% of finishers were more than 25% slower late in the race, and 504 of them
+      were 80% slower or worse.
     </p>
-    <figure>
-      <div class="plate">
-        <img width="1600" height="919" src="../figures/03_wall_distribution.png" loading="lazy"
-          alt="Histogram of each runner's late slowdown. Most runners fall between 0 and 30 percent, the median line is at 15 percent, and the tail runs past 50 percent." />
-      </div>
-      <figcaption>35 to 40 km pace against 10 to 20 km pace, one count per runner.</figcaption>
+    <figure id="wall-fig">
+      <div class="chart" id="wall"></div>
+      <p class="readout" id="wall-read" aria-live="polite">Hover the chart, or focus it and use the arrow keys, to read a bar.</p>
+      <noscript>
+        <div class="plate"><img width="1600" height="919" src="../figures/03_wall_distribution.png" alt="Histogram of each runner's late slowdown. Most runners fall between 0 and 30 percent, the median line is at 15 percent, and the tail runs past 50 percent." /></div>
+      </noscript>
+      <figcaption>One count per runner, in 1-point bins. Rust bars are the runners
+        more than 25% slower; values beyond &minus;10% and 80% are piled into the end bars.</figcaption>
     </figure>
+  </section>
+
+  <section class="stop stop--key" id="plan">
+    <p class="eyebrow">Your race</p>
+    <h2>How runners at your time ran Boston</h2>
+    <p>
+      Enter a finish time between 2:15 and 6:00. The page takes the Boston 2014
+      finishers within the same 15 minutes, uses their median pace in each
+      segment, and scales that shape so it adds up to exactly your time. Next to
+      it is the same time run at even pace. It describes what those runners did
+      on that course; it is not a pacing plan.
+    </p>
+    <div class="bib">
+      <div class="bib-head"><span>Split card</span><span id="plan-band">&nbsp;</span></div>
+      <div class="bib-body">
+        <div class="field">
+          <label for="plan-t">Finish time</label>
+          <input type="text" id="plan-t" value="3:45:00" inputmode="numeric" autocomplete="off" spellcheck="false" />
+          <span class="hint" id="plan-hint">h:mm:ss or h:mm</span>
+        </div>
+        <div class="pstrip" id="plan-strip" aria-hidden="true"></div>
+        <div class="tablewrap plan-tw">
+          <table id="plan-table">
+            <thead><tr><th>Mat</th><th class="num">Boston shape</th><th class="num">Pace</th><th class="num">Even pace</th><th class="num">Vs even</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <p class="plan-note" id="plan-note"></p>
+      </div>
+    </div>
   </section>
 
   <section class="stop">
     <p class="eyebrow">Limitations</p>
     <h2>What this doesn't show</h2>
     <p>
-      Split data locates the slowdown and can't separate the causes (glycogen
-      depletion, muscle damage, heat and a too-fast start all produce a late fade).
+      Split data locates the slowdown and can't separate the causes. Glycogen
+      depletion, muscle damage, heat and a too-fast start all produce a late fade.
     </p>
     <p>
       Boston's course is part of the result. The Newton hills run from about 16 to
-      21 miles, or 26 to 34 km, which is where the corner is. The net-downhill
-      opening also makes early pace look quicker than it would on a flat course.
-      A flat course would probably show a softer corner, but this study has no
-      flat-course data to test that.
+      21 miles, or 26 to 34 km, which is where the corner is, and the
+      net-downhill opening makes early pace look quicker than it would on a flat
+      course. A flat course would probably show a softer corner, but this study
+      has no flat-course data to test that.
     </p>
     <p>
       It is one edition of one race. The companion study on
@@ -429,10 +491,10 @@
     <p class="eyebrow">For a runner</p>
     <h2>The damage shows after 25 km and starts earlier</h2>
     <p>
-      The groups that stay flat late are the ones whose early pace left them
-      something in reserve. The data shows an association and says nothing
+      The groups that stay closest to flat late are the ones whose early pace left
+      them something in reserve. The data shows an association and says nothing
       about mechanism. For a runner the reading is still the familiar one: the
-      first 25 km are where you choose how the last 12 go.
+      first 25 km are where you choose how the last 17 go.
     </p>
   </section>
 
@@ -440,16 +502,18 @@
     <p class="eyebrow">Finish · how it was built</p>
     <h2>Where the numbers come from</h2>
     <p>
-      Two scripts. <code>fetch_data.py</code> downloads the results and
-      <code>analyze.py</code> writes every figure and both tables. Raw data is
-      git-ignored; the outputs are committed.
+      <code>fetch_data.py</code> downloads the results and <code>analyze.py</code>
+      writes the figures and both tables. <code>export_web.py</code> reads the same
+      data through <code>analyze.load()</code> and writes the group and 15-minute
+      band paces and the late-slowdown histogram that this page draws. Raw data
+      is git-ignored; the outputs are committed.
     </p>
     <dl class="specs">
       <div class="spec"><dt>Data</dt><dd>Official 2014 Boston Marathon results, via the public <a href="https://github.com/llimllib/bostonmarathon">llimllib/bostonmarathon</a> mirror</dd></div>
       <div class="spec"><dt>Sample</dt><dd>31,655 finishers with every split present and strictly increasing</dd></div>
       <div class="spec"><dt>Splits</dt><dd>Cumulative times at 5, 10, 20, 25, 30, 35, 40 km and finish; segment pace is time divided by distance</dd></div>
       <div class="spec"><dt>Late slowdown</dt><dd>35 to 40 km pace against the same runner's 10 to 20 km pace</dd></div>
-      <div class="spec"><dt>Built with</dt><dd>Python, pandas, NumPy, matplotlib</dd></div>
+      <div class="spec"><dt>Built with</dt><dd>Python, pandas, NumPy, matplotlib; the charts here are plain SVG and HTML</dd></div>
       <div class="spec"><dt>Companion study</dt><dd><a href="https://lyhjeremy.github.io/marathon-negative-split-myth/">The Negative-Split Myth</a>, the same field split into two halves</dd></div>
     </dl>
   </section>
@@ -477,5 +541,121 @@
     <p>Results data © the Boston Athletic Association, via a public mirror.</p>
   </footer>
 </div>
+
+<script>
+(function () {
+  // tables/web_pacing.json (export_web.py)
+  var P = {"segments":[["0-5",0,5],["5-10",5,10],["10-20",10,20],["20-25",20,25],["25-30",25,30],["30-35",30,35],["35-40",35,40],["40-fin",40,42.195]],"field":{"n":31655,"pace":[5.014,5.044,5.166,5.35,5.694,6.024,6.086,6.0]},"groups":[{"label":"Sub-3:00","n":2382,"pace":[3.926,3.912,3.957,3.984,4.132,4.23,4.23,4.2597]},{"label":"3:00-3:30","n":6959,"pace":[4.41,4.41,4.472,4.554,4.766,4.96,4.99,5.0114]},{"label":"3:30-4:00","n":8725,"pace":[4.91,4.938,5.033,5.174,5.488,5.77,5.796,5.7494]},{"label":"4:00-4:30","n":5338,"pace":[5.414,5.454,5.6,5.85,6.294,6.716,6.744,6.5831]},{"label":"Over 4:30","n":8251,"pace":[6.13,6.26,6.608,7.18,7.914,8.452,8.302,7.8041]}],"bands":[{"lo":135,"hi":150,"n":79,"pace":[3.294,3.34,3.392,3.396,3.47,3.584,3.56,3.6446]},{"lo":150,"hi":165,"n":500,"pace":[3.67,3.671,3.709,3.712,3.83,3.916,3.925,3.9772]},{"lo":165,"hi":180,"n":1773,"pace":[4.014,3.986,4.023,4.05,4.194,4.3,4.3,4.3508]},{"lo":180,"hi":195,"n":2910,"pace":[4.266,4.244,4.2785,4.334,4.524,4.699,4.74,4.7973]},{"lo":195,"hi":210,"n":4049,"pace":[4.556,4.562,4.62,4.7,4.914,5.12,5.15,5.1572]},{"lo":210,"hi":225,"n":4548,"pace":[4.816,4.844,4.921,5.02,5.294,5.543,5.56,5.5353]},{"lo":225,"hi":240,"n":4177,"pace":[5.066,5.09,5.211,5.38,5.702,6.0,6.022,5.9499]},{"lo":240,"hi":255,"n":2871,"pace":[5.324,5.366,5.504,5.704,6.096,6.474,6.492,6.41]},{"lo":255,"hi":270,"n":2467,"pace":[5.54,5.584,5.755,6.06,6.536,7.0,6.998,6.779]},{"lo":270,"hi":285,"n":2021,"pace":[5.764,5.822,6.073,6.43,6.982,7.486,7.422,7.1298]},{"lo":285,"hi":300,"n":1753,"pace":[5.974,6.054,6.365,6.814,7.48,7.966,7.846,7.4032]},{"lo":300,"hi":315,"n":1229,"pace":[6.13,6.29,6.693,7.24,7.99,8.484,8.256,7.7904]},{"lo":315,"hi":330,"n":1034,"pace":[6.326,6.514,6.978,7.659,8.39,8.9,8.654,8.1093]},{"lo":330,"hi":345,"n":858,"pace":[6.46,6.751,7.3515,8.166,8.83,9.306,8.965,8.369]},{"lo":345,"hi":360,"n":562,"pace":[6.605,6.986,7.6825,8.613,9.375,9.783,9.328,8.574]}],"wall":{"median":15.04,"over25":27.39,"hist":[130,25,57,59,85,123,173,259,327,445,610,678,716,841,917,1007,1010,1116,1039,1076,1151,1084,973,1013,871,883,876,791,798,736,675,664,632,613,533,486,521,481,485,410,409,379,346,319,307,252,283,256,241,204,198,149,157,153,138,126,137,137,101,73,97,85,68,89,66,83,64,48,59,62,51,62,43,67,34,34,57,39,38,36,27,26,28,32,27,24,22,21,28,504]}};
+  var NS = "http://www.w3.org/2000/svg", SEG = P.segments;
+  function el(tag, at, parent, txt) { var e = document.createElementNS(NS, tag); for (var k in at) e.setAttribute(k, at[k]); if (txt != null) e.textContent = txt; if (parent) parent.appendChild(e); return e; }
+  function mmss(m) { var s = Math.round(m * 60); return Math.floor(s / 60) + ":" + (s % 60 < 10 ? "0" : "") + s % 60; }
+  function hms(m) { var s = Math.round(m * 60), h = Math.floor(s / 3600), mm = Math.floor(s % 3600 / 60), ss = s % 60; return h + ":" + (mm < 10 ? "0" : "") + mm + ":" + (ss < 10 ? "0" : "") + ss; }
+  function rel(p) { return p.map(function (v) { return (v / p[1] - 1) * 100; }); }
+  function sg(v) { return (v >= 0.05 ? "+" : v <= -0.05 ? "−" : "") + Math.abs(v).toFixed(1) + "%"; }
+  function segName(i) { return SEG[i][0] === "40-fin" ? "40 km to finish" : SEG[i][1] + " to " + SEG[i][2] + " km"; }
+  function shade(v) { var k = Math.max(0, Math.min(1, v / 35)); return Math.round(8 + 92 * k); }
+  // a pace strip: the course as a bar, each segment shaded by slowdown and labeled with pace
+  function strip(box, pace, labels) {
+    var r = rel(pace), W = box.clientWidth || 300;
+    box.innerHTML = SEG.map(function (s, i) {
+      var w = (s[2] - s[1]) / 42.195, pct = shade(r[i]), px = w * W;
+      return '<span style="width:' + (100 * w).toFixed(3) + '%;background:color-mix(in srgb, var(--accent) ' + pct + '%, var(--card));color:' + (pct > 55 ? "var(--paper)" : "var(--ink)") + '">' + (px > 32 && labels !== false ? mmss(pace[i]) : "") + "</span>";
+    }).join("");
+  }
+
+  // ---- decay chart ----
+  var G = [{ label: "Field", name: "Whole field", n: P.field.n, pace: P.field.pace }].concat(P.groups.map(function (g) { return { label: g.label.replace("-", "–"), name: g.label.replace("-", " to "), n: g.n, pace: g.pace }; }));
+  var sel = 0, cur = 4, box = document.getElementById("decay"), seg = document.getElementById("decay-seg"), read = document.getElementById("decay-read");
+  G.forEach(function (g, i) {
+    var b = document.createElement("button"); b.type = "button"; b.textContent = g.label; b.setAttribute("aria-pressed", i === 0 ? "true" : "false");
+    b.addEventListener("click", function () { sel = i; seg.querySelectorAll("button").forEach(function (o, j) { o.setAttribute("aria-pressed", j === i ? "true" : "false"); }); draw(); show(cur); });
+    seg.appendChild(b);
+  });
+  var svg, X, Y, W, H;
+  function draw() {
+    W = Math.max(300, box.clientWidth - 20); H = W < 560 ? 270 : 330;
+    var L = 44, R = W < 560 ? 64 : 84, T = 14, B = 34, y0 = -5, y1 = 40;
+    X = function (km) { return L + km / 42.195 * (W - L - R); }; Y = function (v) { return T + (y1 - v) / (y1 - y0) * (H - T - B); };
+    box.innerHTML = "";
+    svg = el("svg", { viewBox: "0 0 " + W + " " + H, width: W, height: H, tabindex: 0, role: "img",
+      "aria-label": "Step chart of slowdown against own 5 to 10 km pace, by segment, for " + G[sel].name + ", with the other groups in gray." }, box);
+    for (var v = 0; v <= y1; v += 10) { el("line", { class: "grid", x1: L, x2: W - R, y1: Y(v), y2: Y(v) }, svg); el("text", { x: L - 6, y: Y(v) + 4, "text-anchor": "end" }, svg, (v ? "+" : "") + v + "%"); }
+    [0, 10, 20, 30, 40].forEach(function (k) { el("text", { x: X(k), y: H - B + 18, "text-anchor": "middle" }, svg, k + (k === 40 ? " km" : "")); });
+    el("rect", { class: "band", x: X(cur === null ? 0 : SEG[cur][1]), y: T, width: 0, height: H - T - B, id: "dband" }, svg);
+    function path(p) { var r = rel(p), d = ""; SEG.forEach(function (s, i) { d += (i ? "L" : "M") + X(s[1]).toFixed(1) + " " + Y(r[i]).toFixed(1) + "L" + X(s[2]).toFixed(1) + " " + Y(r[i]).toFixed(1); }); return d; }
+    var labs = [];
+    G.forEach(function (g, i) { if (i !== sel && i !== 0) el("path", { class: "ln other", d: path(g.pace) }, svg); });
+    if (sel !== 0) el("path", { class: "ln field", d: path(G[0].pace) }, svg);
+    el("path", { class: "ln on", d: path(G[sel].pace) }, svg);
+    G.forEach(function (g, i) { if (i === 0 && sel !== 0) return; var r = rel(g.pace); labs.push({ y: Y(r[7]), t: g.label, on: i === sel }); });
+    labs.sort(function (a, b) { return a.y - b.y; });
+    for (var k = 1; k < labs.length; k++) if (labs[k].y - labs[k - 1].y < 14) labs[k].y = labs[k - 1].y + 14;
+    labs.forEach(function (l) { el("text", { class: "elab" + (l.on ? " on" : ""), x: W - R + 6, y: l.y + 4 }, svg, l.t); });
+    svg.addEventListener("mousemove", function (e) { var rc = svg.getBoundingClientRect(), x = (e.clientX - rc.left) * W / rc.width, km = (x - L) / (W - L - R) * 42.195;
+      for (var i = 0; i < SEG.length; i++) if (km >= SEG[i][1] && km <= SEG[i][2]) { show(i); break; } });
+    svg.addEventListener("keydown", function (e) { if (e.key === "ArrowRight" || e.key === "ArrowLeft") { e.preventDefault(); show(Math.max(0, Math.min(7, cur + (e.key === "ArrowRight" ? 1 : -1)))); } });
+    svg.addEventListener("focus", function () { show(cur); });
+    strip(document.getElementById("pstrip"), G[sel].pace);
+    var r = rel(G[sel].pace);
+    document.getElementById("decay-title").textContent = G[sel].name + " (" + G[sel].n.toLocaleString("en-US") + "): " + sg(Math.max.apply(null, r)) + " at the slowest segment";
+  }
+  function show(i) {
+    cur = i; var b = document.getElementById("dband"); b.setAttribute("x", X(SEG[i][1])); b.setAttribute("width", X(SEG[i][2]) - X(SEG[i][1]));
+    var g = G[sel], r = rel(g.pace);
+    read.textContent = segName(i) + "  ·  " + g.name.toLowerCase() + " " + mmss(g.pace[i]) + "/km, " + sg(r[i]) + " on 5 to 10 km" + (sel ? "  ·  whole field " + mmss(G[0].pace[i]) + "/km" : "");
+  }
+  var rt; window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(function () { draw(); show(cur); if (tIn) plan(); }, 120); });
+  draw();
+
+  // ---- wall histogram ----
+  (function () {
+    var w = P.wall, n = w.hist.reduce(function (a, b) { return a + b; }, 0), box = document.getElementById("wall"), read = document.getElementById("wall-read"), cur = 25, bars = [];
+    function lab(i) { var lo = i - 10; return i === 0 ? "10% or more faster late" : i === 90 ? "80% or more slower" : (lo < 0 ? (-lo - 1) + " to " + (-lo) + "% faster" : lo + " to " + (lo + 1) + "% slower"); }
+    function show(i) { cur = Math.max(0, Math.min(90, i)); bars.forEach(function (r, j) { r.classList.toggle("on", j === cur); });
+      read.textContent = lab(cur) + ": " + w.hist[cur].toLocaleString("en-US") + " runners, " + (100 * w.hist[cur] / n).toFixed(1) + "% of the field"; }
+    function draw() {
+      var W = Math.max(300, box.clientWidth - 20), H = W < 560 ? 240 : 300, L = 40, R = 10, T = 26, B = 34, y1 = 4;
+      var bw = (W - L - R) / 91, X = function (v) { return L + (v + 10) * bw; }, Y = function (v) { return T + (1 - v / y1) * (H - T - B); };
+      box.innerHTML = ""; bars = [];
+      var s = el("svg", { viewBox: "0 0 " + W + " " + H, width: W, height: H, tabindex: 0, role: "img", "aria-label": "Histogram of each runner's late slowdown. Median 15%; 27% were more than 25% slower." }, box);
+      for (var v = 0; v <= y1; v++) { el("line", { class: "grid", x1: L, x2: W - R, y1: Y(v), y2: Y(v) }, s); el("text", { x: L - 6, y: Y(v) + 4, "text-anchor": "end" }, s, v + "%"); }
+      [0, 20, 40, 60, 80].forEach(function (t) { el("text", { x: X(t), y: H - B + 18, "text-anchor": "middle" }, s, (t ? "+" : "") + t + "%"); });
+      w.hist.forEach(function (c, i) { var v = Math.min(y1, 100 * c / n); bars.push(el("rect", { class: "b" + (i - 10 >= 25 ? " neg" : ""), x: X(i - 10) + 0.5, y: Y(v), width: Math.max(1, bw - 1), height: Y(0) - Y(v) }, s)); });
+      el("line", { class: "zero", x1: X(0), x2: X(0), y1: T - 6, y2: Y(0) }, s);
+      el("line", { class: "med", x1: X(w.median), x2: X(w.median), y1: T - 6, y2: Y(0) }, s);
+      el("text", { class: "lab", x: X(w.median) + 6, y: T + 6 }, s, "median +" + w.median.toFixed(0) + "%");
+      el("text", { class: "lab neg", x: X(27), y: Y(2.2) }, s, w.over25.toFixed(0) + "% beyond +25%");
+      s.addEventListener("mousemove", function (e) { var r = s.getBoundingClientRect(); show(Math.floor(((e.clientX - r.left) * W / r.width - L) / bw)); });
+      s.addEventListener("keydown", function (e) { if (e.key === "ArrowRight" || e.key === "ArrowLeft") { e.preventDefault(); show(cur + (e.key === "ArrowRight" ? 1 : -1)); } });
+      s.addEventListener("focus", function () { show(cur); });
+    }
+    var rt; window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(draw, 120); });
+    draw();
+  })();
+
+  // ---- your race ----
+  var tIn = document.getElementById("plan-t");
+  function parse(s) { var p = s.trim().split(/[:.\s]+/).map(Number); if (p.some(isNaN) || p.length < 2 || p.length > 3) return null; return p.length === 3 ? p[0] * 60 + p[1] + p[2] / 60 : p[0] * 60 + p[1]; }
+  function plan() {
+    var T = parse(tIn.value), hint = document.getElementById("plan-hint"), tb = document.querySelector("#plan-table tbody");
+    var b = null; if (T != null) P.bands.forEach(function (x) { if (T >= x.lo && T < x.hi) b = x; });
+    if (!b) { hint.textContent = "Enter a time from 2:15:00 to 5:59:59."; hint.className = "hint warn"; return; }
+    hint.textContent = "h:mm:ss or h:mm"; hint.className = "hint";
+    var raw = SEG.reduce(function (a, s, i) { return a + b.pace[i] * (s[2] - s[1]); }, 0), k = T / raw;
+    var pace = b.pace.map(function (v) { return v * k; }), even = T / 42.195, cum = 0, rows = "";
+    SEG.forEach(function (s, i) {
+      cum += pace[i] * (s[2] - s[1]); var ev = even * s[2], gap = cum - ev;
+      rows += "<tr><td>" + (s[0] === "40-fin" ? "Finish" : s[2] + " km") + '</td><td class="num">' + hms(cum) + '</td><td class="num">' + mmss(pace[i]) + '/km</td><td class="num">' + hms(ev) + '</td><td class="num">' + (Math.abs(gap) < 0.5 / 60 ? "0:00" : (gap > 0 ? "+" : "−") + mmss(Math.abs(gap))) + "</td></tr>";
+    });
+    tb.innerHTML = rows;
+    document.getElementById("plan-band").textContent = "Boston 2014, " + hms(b.lo).slice(0, 4) + " to " + hms(b.hi).slice(0, 4) + " finishers (" + b.n.toLocaleString("en-US") + ")";
+    strip(document.getElementById("plan-strip"), pace);
+    var r = rel(pace), first = pace.slice(0, 4).reduce(function (a, v, i) { return a + v * (SEG[i][2] - SEG[i][1]); }, 0);
+    var mx = 0; for (var i = 0; i < 8; i++) if (pace[i] > pace[mx]) mx = i;
+    var ah = even * 25 - first; document.getElementById("plan-note").textContent = "These runners reached 25 km " + mmss(Math.abs(ah)) + (ah >= 0 ? " ahead of even pace and gave it back after that." : " behind even pace.") + " Their slowest stretch was " + segName(mx) + ", at " + mmss(pace[mx]) + "/km, " + sg(r[mx]) + " on their 5 to 10 km pace. Even pace for " + hms(T) + " is " + mmss(even) + "/km throughout.";
+  }
+  if (tIn) { tIn.addEventListener("input", plan); plan(); }
+})();
+</script>
 </body>
 </html>
