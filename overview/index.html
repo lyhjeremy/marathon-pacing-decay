@@ -4,13 +4,12 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Hitting the Wall: where a marathon field slows down</title>
-<meta name="description" content="Per-5K splits from 31,655 Boston Marathon finishers. Pace holds nearly flat to 20 km and climbs steeply from about 30 km. The median runner's 35 to 40 km pace was 15% slower than their 10 to 20 km pace." />
+<meta name="description" content="Per-5K splits from 31,655 Boston 2014 finishers, now set beside eight Boston years and a live split tool that predicts your finish band, wall risk and pacing type, checked on the 2024 race it never saw." />
 <meta name="theme-color" content="#ECEBE6" />
 <meta property="og:title" content="Hitting the Wall" />
-<meta property="og:description" content="Median pace for 31,655 Boston finishers, 5 km at a time. The sharp rise comes between 25 and 35 km." />
+<meta property="og:description" content="Where a Boston field slows, across eight years, and a split tool that narrows your finish band as you pass each mat." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://lyhjeremy.github.io/marathon-pacing-decay/overview/" />
-<link href="" rel="stylesheet" />
 <style>
   :root {
     --paper: #ECEBE6;
@@ -296,7 +295,7 @@
   </header>
 
   <section class="hero">
-    <p class="kicker">Boston Marathon 2014 · 31,655 finishers</p>
+    <p class="kicker">Boston Marathon 2014 · 31,655 finishers · plus 2015 to 2024 and a live split tool</p>
     <h1>The field slows hardest between 25 and 35 km</h1>
 
     <p class="hero-sub">
@@ -307,7 +306,8 @@
     </p>
 
     <div class="cta-row">
-      <a class="btn btn-primary" href="#plan">See how your finish time ran it</a>
+      <a class="btn btn-primary" href="#tool">Try the live split tool</a>
+      <a class="textlink" href="#plan">See how your finish time ran it</a>
       <a class="textlink" href="https://github.com/lyhjeremy/marathon-pacing-decay">Code and data on GitHub</a>
     </div>
 
@@ -406,7 +406,7 @@
       <div class="chart" id="decay"></div>
       <p class="readout" id="decay-read" aria-live="polite">Hover the chart, or focus it and use the arrow keys, to read a segment.</p>
       <noscript>
-        <div class="plate"><img width="1680" height="960" src="../figures/02_decay_by_group.png" alt="Five slowdown curves, one per finish-time group from sub-3:00 to over 4:30. All are flat early and separate after 25 km; the sub-3:00 group ends near 9 percent while the over-4:30 group rises past 30 percent." /></div>
+        <div class="plate"><img src="../figures/02_decay_by_group.png" alt="Five slowdown curves, one per finish-time group from sub-3:00 to over 4:30. All are flat early and separate after 25 km; the sub-3:00 group ends near 9 percent while the over-4:30 group rises past 30 percent." /></div>
       </noscript>
       <figcaption>The strip is the course, 0 to 42.2 km, each timed segment shaded by
         how much slower it was than the 5 to 10 km pace and labeled with the median
@@ -429,10 +429,43 @@
       <div class="chart" id="wall"></div>
       <p class="readout" id="wall-read" aria-live="polite">Hover the chart, or focus it and use the arrow keys, to read a bar.</p>
       <noscript>
-        <div class="plate"><img width="1600" height="919" src="../figures/03_wall_distribution.png" alt="Histogram of each runner's late slowdown. Most runners fall between 0 and 30 percent, the median line is at 15 percent, and the tail runs past 50 percent." /></div>
+        <div class="plate"><img src="../figures/03_wall_distribution.png" alt="Histogram of each runner's late slowdown. Most runners fall between 0 and 30 percent, the median line is at 15 percent, and the tail runs past 50 percent." /></div>
       </noscript>
       <figcaption>One count per runner, in 1-point bins. Rust bars are the runners
         more than 25% slower; values beyond &minus;10% and 80% are piled into the end bars.</figcaption>
+    </figure>
+  </section>
+
+
+  <section class="stop stop--key" id="years-sec">
+    <p class="eyebrow">October 2026 upgrade · eight years</p>
+    <h2>2014 was the hardest fade in the set</h2>
+    <p>
+      Everything above is one race. To see whether 2014 was typical, the same
+      segment medians were run on every Boston year with public 5 km splits:
+      2014 to 2017 and 2021 to 2024, about 200,000 finishers in all. The 2013
+      race is drawn in gray and left out of every comparison: it was stopped
+      at about 4:09 on the race clock, so its finishers are the faster part of
+      the field. 2018 and 2019 are missing because the public files for those
+      years carry no splits.
+    </p>
+    <p>
+      The corner is in the same place every year: pace is close to flat to
+      20 km and the biggest step is between 25 and 35 km, over the Newton
+      hills. What changes is its height. In 2014 the median runner's 35 to
+      40 km pace was 15.1% slower than their 10 to 20 km pace, and 27.4% of
+      finishers slowed by more than 25%. In the other seven years those two
+      numbers ran from 5.7% and 7.5% (2023) to 13.2% and 22.7% (2024). The
+      2014 numbers on this page are kept as they were; this section adds the
+      other years beside them.
+    </p>
+    <figure>
+      <link rel="stylesheet" href="../assets/race-tool.css" />
+      <div class="years" id="years"><div class="skeleton sk-years"></div></div>
+      <figcaption>Each panel is one year's median pace by segment against its own 5 to 10 km pace, on a scale from &minus;5% to +25%.
+        The dashed gray line repeats 2014 for comparison. Data from <code>tables/years_decay.json</code>, written by
+        <code>multiyear.py</code> with the same split filter as <code>analyze.py</code> (wheelchair and handcycle entrants removed by
+        division, so the 2014 panel has 31,634 runners rather than 31,655).</figcaption>
     </figure>
   </section>
 
@@ -466,6 +499,133 @@
     </div>
   </section>
 
+
+  <section class="stop stop--key" id="tool">
+    <p class="eyebrow">October 2026 upgrade · live split tool</p>
+    <h2>Enter your splits as you reach each mat</h2>
+    <p>
+      The card above describes 2014. This one predicts. Type the race clock at
+      each mat you have passed and it gives a finish time with 80% and 95%
+      ranges, the chance that your 35 to 40 km pace ends up more than 25%
+      slower than your 10 to 20 km pace (the wall as this page defines it),
+      and the pacing type your splits look like so far. Each new split adds a
+      column to the chart, so you can watch the range close in. Gender and age
+      are optional; for a typical runner they move the predicted finish by
+      about two minutes before 30 km and under one minute after.
+    </p>
+    <p>
+      It runs in the browser on <code>model/pace_model.json</code>; nothing
+      you type leaves the page. The same file drives <code>pace_model.py</code>
+      in the repo. It was fitted on Boston only, so on a flatter course it
+      will predict too much fade.
+    </p>
+    <div class="rt" id="race-tool"><div class="skeleton sk-tool"></div></div>
+  </section>
+
+  <section class="stop" id="holdout">
+    <p class="eyebrow">How the model was built</p>
+    <h2>One linear model per mat, tested on a year it never saw</h2>
+    <p>
+      At each mat the model predicts how much slower than even pace the rest of
+      the race will be. Its inputs are the average pace so far, the last 5 km
+      against that average, the first 5 km against that average, those terms
+      against each other, and optionally gender and age. The training years
+      are 2014 to 2017 and 2021 to 2023 (176,059 finishers). 2024, the latest
+      year with splits, was held out: nothing about it was used to fit or
+      choose anything.
+    </p>
+    <p>
+      I compared four ways to predict, by leaving out one training year at a
+      time: even pace from the latest split, the 2014 field's median curve
+      scaled to your time (the rule behind the split card above), this linear
+      model, and gradient-boosted trees. The trees were 0.6 to 4% better than
+      the linear model. I kept the linear model because it is a few hundred
+      coefficients that the browser and Python evaluate identically; the
+      trees would have been a large export for a small gain. The table shows
+      all of them on 2024, the trees included for the record.
+    </p>
+    <div class="mae">
+      <table>
+        <thead><tr><th>Mat</th><th class="num">Even pace</th><th class="num">2014 curve</th><th class="num">Model</th><th class="num">Trees</th><th class="num">Wall Brier: model / base rate</th></tr></thead>
+        <tbody id="mae-body"><tr><td colspan="6"><div class="skeleton" style="height:240px"></div></td></tr></tbody>
+      </table>
+    </div>
+    <p class="sheet-note">Mean absolute error in minutes on 25,377 finishers of the 2024 race; lower is better. The Brier score
+      compares the wall-risk probability with what happened (0 is perfect); the base rate always predicts the training share, 17%.
+      From <code>tables/model_eval.json</code>, written by <code>train_model.py</code>.</p>
+    <p>
+      From 10 km on the model beats both baselines. At the half its typical
+      miss is 7.9 minutes, against 18.1 for even pace and 9.9 for the 2014
+      curve. At 5 km it does not: the 2014 curve was slightly closer on 2024
+      (15.0 against 15.4 minutes), probably because 2024, like 2014, had a
+      big fade (see the panels above).
+    </p>
+    <p>
+      The ranges are split conformal intervals. For each mat and each fifth of
+      the field by pace so far, the model's errors on the left-out years set
+      the width, so year-to-year swings in weather are already in them. The
+      chart shows how often 2024 finish times fell inside.
+    </p>
+    <figure>
+      <p class="fig-title">Interval coverage on 2024</p>
+      <div class="chart" id="calib"><div class="skeleton sk-chart"></div></div>
+      <p class="readout" id="calib-read" aria-live="polite">Hover the chart, or focus it and use the arrow keys, to read a mat.</p>
+      <figcaption>Share of 2024 finishers whose time fell inside the 80% (blue) and 95% (rust) ranges predicted at each mat. Dashed lines are the targets.</figcaption>
+    </figure>
+    <p>
+      Coverage is close to target early and slips late: by 35 km the 80% range
+      held 74% of runners and the 95% range 92%. 2024 faded harder than most
+      training years, so the late ranges were a little too narrow for it. At
+      the early mats the misses sit with the slowest finishers; by 35 km they
+      are spread across the field.
+    </p>
+    <figure>
+      <p class="fig-title">Wall risk against what happened</p>
+      <div class="seg" role="group" aria-label="Mat" id="rel-seg"></div>
+      <div class="chart" id="rel"><div class="skeleton sk-chart"></div></div>
+      <p class="readout" id="rel-read" aria-live="polite">Hover the chart, or focus it and use the arrow keys, to read a group.</p>
+      <figcaption>2024 runners grouped by their predicted wall risk, in tenths; each square is a group, sized by how many runners it holds,
+        placed at its average prediction and the share that actually slowed by more than 25%. Groups under 50 runners are left out.</figcaption>
+    </figure>
+    <p>
+      Wall risk is weak early and useful late. At 5 and 10 km it barely beats
+      the base rate (Brier 0.172 against 0.179), and for most runners it runs
+      low, because 22.7% of 2024 runners hit the wall against 17% in the
+      training years. The few given a very high risk at the half hit it less
+      often than predicted. By 30 km the score is 0.117, and at 35 km 0.091.
+    </p>
+  </section>
+
+  <section class="stop" id="types">
+    <p class="eyebrow">Pacing types</p>
+    <h2>Four shapes, and a field that drifts between them</h2>
+    <p>
+      Each training runner's eight segment paces were divided by their own
+      average pace and grouped with k-means. Three to six groups all came back
+      the same from different random starts, but the groups are slices of a
+      continuum: the silhouette score for four is 0.28, low. I kept four
+      because each has a shape a runner would recognize, and named them by
+      that shape.
+    </p>
+    <div class="mae fit">
+      <table>
+        <thead><tr><th>Type</th><th>Pace against own average</th><th class="num">2014 to 2023</th><th class="num">2024</th></tr></thead>
+        <tbody id="types-body"><tr><td colspan="4"><div class="skeleton" style="height:150px"></div></td></tr></tbody>
+      </table>
+    </div>
+    <p class="sheet-note">From <code>model/pace_model.json</code> and <code>tables/model_eval.json</code>.</p>
+    <p>
+      The shapes hold from year to year (clustering one year alone puts the
+      same runners in the same type 72 to 92% of the time), but the mix does
+      not: Even was 29% of the 2014 field and 65% of 2023. In the tool, the
+      type is the nearest shape to the segments you have run, scaled by your
+      predicted finish. Read early it is a guess. On 2024 it matched the
+      runner's full-race type 40% of the time at 10 km, no better than always
+      answering Steady fade, then 53% at the half, 70% at 30 km and 81% at
+      35 km.
+    </p>
+  </section>
+
   <section class="stop">
     <p class="eyebrow">Limitations</p>
     <h2>What this doesn't show</h2>
@@ -481,9 +641,14 @@
       has no flat-course data to test that.
     </p>
     <p>
-      It is one edition of one race. The companion study on
+      The main results above are one edition of one race, and the multi-year
+      panels show it was an unusually hard one. The model adds eight years but
+      is still Boston only, and it knows nothing about the weather: a hot year
+      shifts everyone at once, which is why its 2024 ranges ran narrow late in
+      the race. The 2015 to 2024 files come from public mirrors of the official
+      results, not from the B.A.A. directly. The companion study on
       <a href="https://lyhjeremy.github.io/marathon-negative-split-myth/">negative splits</a>
-      uses the same field, so the two share whatever was unusual about that day.
+      now has the per-year counts too.
     </p>
   </section>
 
@@ -506,14 +671,19 @@
       writes the figures and both tables. <code>export_web.py</code> reads the same
       data through <code>analyze.load()</code> and writes the group and 15-minute
       band paces and the late-slowdown histogram that this page draws. Raw data
-      is git-ignored; the outputs are committed.
+      is git-ignored; the outputs are committed. For the October 2026 upgrade,
+      <code>fetch_multiyear.py</code> and <code>build_dataset.py</code> assemble
+      the eight years, <code>multiyear.py</code> writes the per-year curves, and
+      <code>train_model.py</code> fits the model, exports it and scores it on 2024.
     </p>
     <dl class="specs">
       <div class="spec"><dt>Data</dt><dd>Official 2014 Boston Marathon results, via the public <a href="https://github.com/llimllib/bostonmarathon">llimllib/bostonmarathon</a> mirror</dd></div>
       <div class="spec"><dt>Sample</dt><dd>31,655 finishers with every split present and strictly increasing</dd></div>
       <div class="spec"><dt>Splits</dt><dd>Cumulative times at 5, 10, 20, 25, 30, 35, 40 km and finish; segment pace is time divided by distance</dd></div>
       <div class="spec"><dt>Late slowdown</dt><dd>35 to 40 km pace against the same runner's 10 to 20 km pace</dd></div>
-      <div class="spec"><dt>Built with</dt><dd>Python, pandas, NumPy, matplotlib; the charts here are plain SVG and HTML</dd></div>
+      <div class="spec"><dt>More years</dt><dd>2013 and 2014 from llimllib; 2015 to 2017 from the Kaggle mirror in <a href="https://github.com/Marc-Bouche/boston-marathon-analysis">Marc-Bouche/boston-marathon-analysis</a>; 2021 to 2024 from <a href="https://github.com/williamsorg4/BostonMarathonTimeModel">williamsorg4/BostonMarathonTimeModel</a>. Row counts per year in <code>tables/years.csv</code></dd></div>
+      <div class="spec"><dt>Model</dt><dd>Linear model on pace-ratio features at each mat; split conformal intervals from leave-one-year-out errors; logistic wall risk; k-means pacing types. Trained 2014 to 2023, tested on 2024</dd></div>
+      <div class="spec"><dt>Built with</dt><dd>Python, pandas, NumPy, matplotlib, scikit-learn for fitting only; the charts and the tool here are plain SVG, HTML and JavaScript</dd></div>
       <div class="spec"><dt>Companion study</dt><dd><a href="https://lyhjeremy.github.io/marathon-negative-split-myth/">The Negative-Split Myth</a>, the same field split into two halves</dd></div>
     </dl>
   </section>
@@ -657,5 +827,6 @@
   if (tIn) { tIn.addEventListener("input", plan); plan(); }
 })();
 </script>
+<script src="../assets/race-tool.js" data-base="../"></script>
 </body>
 </html>

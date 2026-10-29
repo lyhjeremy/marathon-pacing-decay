@@ -592,9 +592,9 @@
    "loyo_mae_fade_rule": 1.092,
    "loyo_mae_linear": 0.642,
    "loyo_mae_gbm": 0.627,
-   "loyo_brier_base_rate": NaN,
-   "loyo_brier_logistic": NaN,
-   "loyo_brier_gbm": NaN
+   "loyo_brier_base_rate": null,
+   "loyo_brier_logistic": null,
+   "loyo_brier_gbm": null
   }
  ],
  "holdout_gbm_after_choice": [

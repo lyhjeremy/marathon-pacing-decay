@@ -226,8 +226,9 @@ def name_types(cen):
     names = TYPE_NAMES.get(k, [f"Type {i + 1}" for i in range(k)])
     desc = []
     for c in cen:
-        desc.append(f"0-10 km {100 * (np.mean(c[:2]) - 1):+.1f}%, 10-25 km {100 * (np.average(c[2:4], weights=[10, 5]) - 1):+.1f}%, "
-                    f"25-35 km {100 * (np.mean(c[4:6]) - 1):+.1f}%, 35 km-finish {100 * (np.average(c[6:], weights=[5, 2.195]) - 1):+.1f}% against own mean pace")
+        desc.append(f"0 to 10 km {100 * (np.mean(c[:2]) - 1):+.0f}%, 10 to 25 km {100 * (np.average(c[2:4], weights=[10, 5]) - 1):+.0f}%, "
+                    f"25 to 35 km {100 * (np.mean(c[4:6]) - 1):+.0f}%, 35 km to finish {100 * (np.average(c[6:], weights=[5, 2.195]) - 1):+.0f}%, "
+                    "against the runner's own average pace")
     return names, desc
 
 
@@ -376,14 +377,14 @@ def main():
                       "k_search": kreport, "year_stability": yr_rows}
     os.makedirs(os.path.join(HERE, "model"), exist_ok=True)
     with open(pm.JSON_PATH, "w") as f:
-        json.dump(model, f, separators=(",", ":"))
+        json.dump(model, f, separators=(",", ":"), allow_nan=False)
     pm._MODEL = None
     print(f"wrote {pm.JSON_PATH} ({os.path.getsize(pm.JSON_PATH):,} bytes)")
     ev = evaluate(model)
-    ev["loyo_compare"] = cmp_.to_dict(orient="records")
+    ev["loyo_compare"] = [{k: (None if isinstance(v, float) and np.isnan(v) else v) for k, v in r.items()} for r in cmp_.to_dict(orient="records")]
     ev["holdout_gbm_after_choice"] = gbm_on_holdout(d)
     with open(os.path.join(HERE, "tables", "model_eval.json"), "w") as f:
-        json.dump(ev, f, indent=1)
+        json.dump(ev, f, indent=1, allow_nan=False)
     print(json.dumps({k: v for k, v in ev.items() if k not in ("checkpoints", "loyo_compare")}, indent=1)[:3000])
     print(f"done in {time.time() - t0:.0f}s")
 

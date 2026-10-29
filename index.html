@@ -4,8 +4,9 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Hitting the Wall: where a marathon field slows down</title>
-<meta name="description" content="Per-5K splits from 31,655 finishers of the 2014 Boston Marathon. Pace holds nearly flat to 20 km and climbs steeply from about 30 km. The median runner's 35 to 40 km pace was 15% slower than their 10 to 20 km pace." />
+<meta name="description" content="Per-5K splits from 31,655 finishers of the 2014 Boston Marathon, set beside eight Boston years, with a live split tool that predicts your finish band, wall risk and pacing type." />
 <link rel="stylesheet" href="assets/family.css" />
+<link rel="stylesheet" href="assets/race-tool.css" />
 <style>
   * { box-sizing: border-box; border-radius: 0; }
   html, body { margin: 0; padding: 0; }
@@ -85,7 +86,7 @@
 <div class="wrap">
   <header class="top">
     <span class="name">Hitting the Wall</span>
-    <span class="meta">Boston 2014 · 31,655 finishers · 5 km splits</span>
+    <span class="meta">Boston 2014 · 31,655 finishers · 5 km splits · now 2013 to 2024</span>
   </header>
 
   <h1>The wall is at <em>30 km</em></h1>
@@ -163,8 +164,27 @@
     <figcaption>35 to 40 km pace against 10 to 20 km pace, one count per runner. Rust bars are the 27% more than 25% slower.</figcaption>
   </figure>
 
+  <h2>Was 2014 typical?</h2>
+  <p>No: it had the hardest fade of the eight Boston years with public 5 km splits (2014 to 2017, 2021 to 2024). The corner sits between 25 and 35 km every year, but in 2014 the median runner's late slowdown was 15.1% and 27.4% slowed by more than 25%; the other years ran from 5.7% and 7.5% (2023) to 13.2% and 22.7% (2024). The 2013 race, stopped at about 4:09 on the race clock, is shown in gray and left out of the comparison. The 2014 figures above are unchanged.</p>
+  <figure class="ix">
+    <div class="years" id="years"><div class="skeleton sk-years"></div></div>
+    <figcaption>Each panel: one year's median pace by segment against its own 5 to 10 km pace, &minus;5% to +25%. Dashed gray is 2014. From <code>tables/years_decay.json</code> (<code>multiyear.py</code>).</figcaption>
+  </figure>
+
+  <h2 id="tool">Live split tool</h2>
+  <p>Type the race clock at each mat as you pass it. The tool predicts your finish with 80% and 95% ranges, the chance you hit the wall (35 to 40 km pace more than 25% slower than 10 to 20 km), and the pacing type your splits look like so far; each split adds a column, so you can watch the range close in. It runs in your browser on <code>model/pace_model.json</code>, a linear model per mat fitted on 176,059 Boston finishers from 2014 to 2023. Boston only: a flatter course will fade less than it predicts.</p>
+  <div class="ix"><div class="rt" id="race-tool"><div class="skeleton sk-tool"></div></div></div>
+
+  <h2>Tested on 2024</h2>
+  <p>The 2024 race was held out of fitting and every modeling choice. On its 25,377 finishers the typical miss at the half was 7.9 minutes, against 18.1 for even pace and 9.9 for scaling the 2014 curve; at 5 km the 2014 curve was slightly better. The ranges come from split conformal prediction on errors in left-out training years. They held close to target early and ran a little narrow late in the race, because 2024 faded harder than most training years. The <a href="overview/#holdout">write-up</a> has the full table, the wall-risk calibration and the four pacing types.</p>
+  <figure class="ix">
+    <div class="chart" id="calib"><div class="skeleton sk-chart"></div></div>
+    <p class="readout" id="calib-read" aria-live="polite">Hover the chart, or focus it and use the arrow keys, to read a mat.</p>
+    <figcaption>Share of 2024 finishers inside the 80% (blue) and 95% (rust) ranges predicted at each mat; dashed lines are the targets. From <code>tables/model_eval.json</code> (<code>train_model.py</code>).</figcaption>
+  </figure>
+
   <h2>What this doesn't show</h2>
-  <p>Split times locate the slowdown; they can't say whether glycogen, muscle damage, heat or a fast start caused it. Boston's Newton hills run from about 26 to 34 km, right on the corner, and the net-downhill opening makes early pace look quicker than it would on a flat course. This is one race on one day. The companion study, <a href="https://lyhjeremy.github.io/marathon-negative-split-myth/">The Negative-Split Myth</a>, uses the same field.</p>
+  <p>Split times locate the slowdown; they can't say whether glycogen, muscle damage, heat or a fast start caused it. Boston's Newton hills run from about 26 to 34 km, right on the corner, and the net-downhill opening makes early pace look quicker than it would on a flat course. The main figures are one race on one day, and the multi-year panels show it was a hard one; the model knows nothing about weather. The companion study, <a href="https://lyhjeremy.github.io/marathon-negative-split-myth/">The Negative-Split Myth</a>, uses the same field.</p>
 
   <h2>Method</h2>
   <dl>
@@ -172,7 +192,9 @@
     <div><dt>Sample</dt><dd>31,655 finishers with every split present and strictly increasing</dd></div>
     <div><dt>Pace</dt><dd>Segment time divided by segment distance, in min/km; field value is the median</dd></div>
     <div><dt>Late slowdown</dt><dd>Each runner's 35 to 40 km pace against their own 10 to 20 km pace</dd></div>
-    <div><dt>Run it</dt><dd><code>python fetch_data.py</code> then <code>python analyze.py</code> (Python, pandas, NumPy, matplotlib)</dd></div>
+    <div><dt>More years</dt><dd>2015 to 2017 from a Kaggle mirror, 2021 to 2024 from <a href="https://github.com/williamsorg4/BostonMarathonTimeModel">williamsorg4/BostonMarathonTimeModel</a>; wheelchair and handcycle entrants removed; counts in <code>tables/years.csv</code></dd></div>
+    <div><dt>Model</dt><dd>Linear model on pace ratios at each mat, conformal intervals, logistic wall risk, k-means pacing types; <code>pace_model.py</code> runs it with NumPy alone</dd></div>
+    <div><dt>Run it</dt><dd><code>python fetch_data.py</code> then <code>python analyze.py</code>; for the upgrade, <code>fetch_multiyear.py</code>, <code>build_dataset.py</code>, <code>multiyear.py</code>, <code>train_model.py</code></dd></div>
   </dl>
 
   <footer>
@@ -294,5 +316,6 @@
   if (tIn) { tIn.addEventListener("input", plan); plan(); }
 })();
 </script>
+<script src="assets/race-tool.js" data-base=""></script>
 </body>
 </html>
