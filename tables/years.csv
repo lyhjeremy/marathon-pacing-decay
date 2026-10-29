@@ -1,0 +1,10 @@
+year,source,rows_in_source,wheelchair_handcycle_duo_dropped,speed_backstop_dropped,finishers,complete_splits,has_15k,note
+2013,llimllib/bostonmarathon,16164,52,0,16112,16002,0,race halted at 4:09 gun time; finishers biased fast; excluded from model and year comparisons
+2014,llimllib/bostonmarathon,31984,53,0,31931,31596,0,
+2015,Kaggle mirror (Marc-Bouche/boston-marathon-analysis),26598,0,0,26598,26298,1,
+2016,Kaggle mirror (Marc-Bouche/boston-marathon-analysis),26630,0,0,26630,26481,1,
+2017,Kaggle mirror (Marc-Bouche/boston-marathon-analysis),26410,0,0,26410,26259,1,
+2021,williamsorg4/BostonMarathonTimeModel,15583,85,0,15320,15018,1,
+2022,williamsorg4/BostonMarathonTimeModel,25119,57,0,24789,24364,1,
+2023,williamsorg4/BostonMarathonTimeModel,27148,93,0,26773,26064,1,
+2024,williamsorg4/BostonMarathonTimeModel,26451,109,0,25927,25425,1,
