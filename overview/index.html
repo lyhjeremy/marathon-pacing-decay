@@ -258,6 +258,7 @@
   .pstrip { display: flex; height: 34px; border: 1px solid var(--edge); margin: 0 0 10px; }
   .pstrip span { display: flex; align-items: center; justify-content: center; font: 600 12.5px/1 var(--mono); border-right: 1px solid var(--card); overflow: hidden; white-space: nowrap; }
   .pstrip span:last-child { border-right: 0; }
+  .pstrip .chiplab { font: inherit; background: var(--card); color: var(--ink); padding: 2px 3px; }
   @media (max-width: 640px) { .pstrip span { font-size: 11px; letter-spacing: -.02em; } }
   .chart { border: 1px solid var(--rule); background: var(--card); padding: 10px 10px 4px; }
   .chart svg { display: block; width: 100%; height: auto; overflow: visible; }
@@ -290,6 +291,17 @@
   .plan-tw td { color: var(--ink); }
   .plan-note { font-family: var(--sans); font-size: 15px; line-height: 1.5; color: var(--ink2); margin: 14px 0 0; }
   @media (max-width: 640px) { .plan-tw table { font-size: 12px; } .plan-tw th, .plan-tw td { padding: 6px 5px; } .bib-body { padding: 14px 10px; } }
+
+  .glance { margin-top: 30px; border-top: 3px solid var(--ink); }
+  .glance h2 { font: 700 20px/1.2 var(--display); text-transform: uppercase; letter-spacing: .03em; margin: 12px 0 4px; color: var(--ink); }
+  .glance dl { margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 26px; }
+  .glance dl > div { padding: 12px 0 14px; border-bottom: 1px solid var(--rule); }
+  .glance dt { font: 600 12px/1.3 var(--mono); text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin-bottom: 5px; }
+  .glance dd { margin: 0; font: 400 15px/1.5 var(--sans); color: var(--ink); }
+  .glance .hit dt { color: var(--accent); }
+  .glance .hit dd { font-weight: 600; }
+  @media (max-width: 900px) { .glance dl { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .glance dl { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
@@ -307,7 +319,9 @@
       Boston has a timing mat every 5 km, so the location of "the wall" can be
       measured. Across 31,655 finishers, median pace holds nearly flat to 20 km,
       drifts through 25 km, then climbs steeply into 30 km and stays high to the
-      finish.
+      finish. A model fitted on seven other Boston years and tested on the
+      held-out 2024 race predicts the finish from halfway with a mean miss of
+      7.9 minutes, against 18.1 for even pace.
     </p>
 
     <div class="cta-row">
@@ -338,6 +352,18 @@
            40 km.</p>
       </div>
     </div>
+
+    <section class="glance" aria-labelledby="glance-h">
+      <h2 id="glance-h">At a glance</h2>
+      <dl>
+        <div><dt>Question</dt><dd>Where does a marathon field slow down, and can the splits so far predict the finish?</dd></div>
+        <div><dt>Data</dt><dd>Boston 2014: 31,655 finishers with every 5 km split. Model: 176,059 finishers from 2014 to 2017 and 2021 to 2023</dd></div>
+        <div><dt>Method</dt><dd>Median pace per segment against the 5 to 10 km pace; one linear model per mat, with split conformal ranges</dd></div>
+        <div><dt>Check</dt><dd>2024 held out (25,377 finishers). Mean miss from halfway: 7.9 min, against 18.1 for even pace and 9.9 for the 2014 curve</dd></div>
+        <div class="hit"><dt>Result</dt><dd>Median pace +12.9% at 25 to 30 km and +19.4% at 30 to 35 km; 27% of runners slowed by more than 25%</dd></div>
+        <div><dt>Limitation</dt><dd>Boston only, with the Newton hills on the corner, and no weather. At 35 km the 80% range held 74% of 2024 runners</dd></div>
+      </dl>
+    </section>
   </section>
 </div>
 
@@ -411,7 +437,7 @@
       <div class="chart" id="decay"></div>
       <p class="readout" id="decay-read" aria-live="polite">Hover the chart, or focus it and use the arrow keys, to read a segment.</p>
       <noscript>
-        <div class="plate"><img src="../figures/02_decay_by_group.png" alt="Five slowdown curves, one per finish-time group from sub-3:00 to over 4:30. All are flat early and separate after 25 km; the sub-3:00 group ends near 9 percent while the over-4:30 group rises past 30 percent." /></div>
+        <div class="plate"><img width="1680" height="960" src="../figures/02_decay_by_group.png" alt="Five slowdown curves, one per finish-time group from sub-3:00 to over 4:30. All are flat early and separate after 25 km; the sub-3:00 group ends near 9 percent while the over-4:30 group rises past 30 percent." /></div>
       </noscript>
       <figcaption>The strip is the course, 0 to 42.2 km, each timed segment shaded by
         how much slower it was than the 5 to 10 km pace and labeled with the median
@@ -434,7 +460,7 @@
       <div class="chart" id="wall"></div>
       <p class="readout" id="wall-read" aria-live="polite">Hover the chart, or focus it and use the arrow keys, to read a bar.</p>
       <noscript>
-        <div class="plate"><img src="../figures/03_wall_distribution.png" alt="Histogram of each runner's late slowdown. Most runners fall between 0 and 30 percent, the median line is at 15 percent, and the tail runs past 50 percent." /></div>
+        <div class="plate"><img width="1600" height="919" src="../figures/03_wall_distribution.png" alt="Histogram of each runner's late slowdown. Most runners fall between 0 and 30 percent, the median line is at 15 percent, and the tail runs past 50 percent." /></div>
       </noscript>
       <figcaption>One count per runner, in 1-point bins. Rust bars are the runners
         more than 25% slower; values beyond &minus;10% and 80% are piled into the end bars.</figcaption>
@@ -736,6 +762,33 @@
       var w = (s[2] - s[1]) / 42.195, pct = shade(r[i]), px = w * W;
       return '<span style="width:' + (100 * w).toFixed(3) + '%;background:color-mix(in srgb, var(--accent) ' + pct + '%, var(--card));color:' + (pct > 55 ? "var(--paper)" : "var(--ink)") + '">' + (px > 32 && labels !== false ? mmss(pace[i]) : "") + "</span>";
     }).join("");
+    fixInk(box);
+  }
+  // Pick the label color (ink or paper) with the higher contrast on each shaded cell;
+  // if neither reaches 4.5:1, put the label on a small card-colored chip.
+  function rgbOf(str) {
+    var m = str.match(/[\d.]+/g) || [0, 0, 0];
+    var v = m.slice(0, 3).map(Number);
+    if (/^color\(/.test(str)) v = v.map(function (x) { return x * 255; });
+    return v;
+  }
+  function lumOf(c) {
+    var a = c.map(function (x) { x /= 255; return x <= 0.04045 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4); });
+    return 0.2126 * a[0] + 0.7152 * a[1] + 0.0722 * a[2];
+  }
+  function ratio(a, b) { var x = lumOf(a), y = lumOf(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); }
+  function fixInk(box) {
+    var probe = document.createElement("i");
+    probe.style.cssText = "position:absolute;visibility:hidden;color:var(--ink);background:var(--paper)";
+    box.appendChild(probe);
+    var cs = getComputedStyle(probe), ink = rgbOf(cs.color), paper = rgbOf(cs.backgroundColor);
+    box.removeChild(probe);
+    box.querySelectorAll("span").forEach(function (sp) {
+      if (!sp.textContent) return;
+      var bg = rgbOf(getComputedStyle(sp).backgroundColor), ri = ratio(ink, bg), rp = ratio(paper, bg);
+      sp.style.color = ri >= rp ? "var(--ink)" : "var(--paper)";
+      if (Math.max(ri, rp) < 4.5) sp.innerHTML = '<b class="chiplab">' + sp.textContent + "</b>";
+    });
   }
 
   // ---- decay chart ----

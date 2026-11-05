@@ -1,6 +1,9 @@
 # Hitting the Wall: the marathon pacing-decay curve
 
-Where does a marathon field slow down? This repo measures it from the 5 km splits of 31,655 finishers of the 2014 Boston Marathon; the answer is a bend that starts after 25 km. Since October 2026 it also repeats that curve for every Boston year with public splits (2014 to 2017, 2021 to 2024) and ships an in-race model: give it the splits you have so far and it predicts your finish with 80% and 95% ranges, your chance of hitting the wall, and your pacing type. The [live split tool](https://lyhjeremy.github.io/marathon-pacing-decay/#tool) runs it in the browser.
+Where does a marathon field slow down, and can your splits so far predict your finish?
+In the 5 km splits of 31,655 finishers of the 2014 Boston Marathon, median pace is 12.9% slower than the 5 to 10 km pace at 25 to 30 km and 19.4% slower at 30 to 35 km; on the held-out 2024 race the per-mat model predicts the finish from halfway with a mean miss of 7.9 minutes, against 18.1 for even pace.
+
+Since October 2026 the repo also repeats that curve for every Boston year with public splits (2014 to 2017, 2021 to 2024) and ships an in-race model: give it the splits you have so far and it predicts your finish with 80% and 95% ranges, your chance of hitting the wall, and your pacing type. The [live split tool](https://lyhjeremy.github.io/marathon-pacing-decay/#tool) runs it in the browser.
 
 [Live site](https://lyhjeremy.github.io/marathon-pacing-decay/) · [Write-up](https://lyhjeremy.github.io/marathon-pacing-decay/overview/)
 

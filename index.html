@@ -70,6 +70,7 @@
   .pstrip { display: flex; height: 34px; border: 1px solid var(--edge); margin: 0 0 10px; }
   .pstrip span { display: flex; align-items: center; justify-content: center; font: 600 12.5px/1 var(--mono); border-right: 1px solid var(--card); overflow: hidden; white-space: nowrap; }
   .pstrip span:last-child { border-right: 0; }
+  .pstrip .chiplab { font: inherit; background: var(--card); color: var(--ink); padding: 2px 3px; }
   @media (max-width: 640px) { .pstrip span { font-size: 11px; letter-spacing: -.02em; } }
   .chart { border: 1px solid var(--rule); background: var(--card); padding: 10px 10px 4px; }
   .chart svg { display: block; width: 100%; height: auto; overflow: visible; }
@@ -229,6 +230,33 @@
       var w = (s[2] - s[1]) / 42.195, pct = shade(r[i]), px = w * W;
       return '<span style="width:' + (100 * w).toFixed(3) + '%;background:color-mix(in srgb, var(--accent) ' + pct + '%, var(--card));color:' + (pct > 55 ? "var(--paper)" : "var(--ink)") + '">' + (px > 32 && labels !== false ? mmss(pace[i]) : "") + "</span>";
     }).join("");
+    fixInk(box);
+  }
+  // Pick the label color (ink or paper) with the higher contrast on each shaded cell;
+  // if neither reaches 4.5:1, put the label on a small card-colored chip.
+  function rgbOf(str) {
+    var m = str.match(/[\d.]+/g) || [0, 0, 0];
+    var v = m.slice(0, 3).map(Number);
+    if (/^color\(/.test(str)) v = v.map(function (x) { return x * 255; });
+    return v;
+  }
+  function lumOf(c) {
+    var a = c.map(function (x) { x /= 255; return x <= 0.04045 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4); });
+    return 0.2126 * a[0] + 0.7152 * a[1] + 0.0722 * a[2];
+  }
+  function ratio(a, b) { var x = lumOf(a), y = lumOf(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); }
+  function fixInk(box) {
+    var probe = document.createElement("i");
+    probe.style.cssText = "position:absolute;visibility:hidden;color:var(--ink);background:var(--paper)";
+    box.appendChild(probe);
+    var cs = getComputedStyle(probe), ink = rgbOf(cs.color), paper = rgbOf(cs.backgroundColor);
+    box.removeChild(probe);
+    box.querySelectorAll("span").forEach(function (sp) {
+      if (!sp.textContent) return;
+      var bg = rgbOf(getComputedStyle(sp).backgroundColor), ri = ratio(ink, bg), rp = ratio(paper, bg);
+      sp.style.color = ri >= rp ? "var(--ink)" : "var(--paper)";
+      if (Math.max(ri, rp) < 4.5) sp.innerHTML = '<b class="chiplab">' + sp.textContent + "</b>";
+    });
   }
 
   // ---- decay chart ----
