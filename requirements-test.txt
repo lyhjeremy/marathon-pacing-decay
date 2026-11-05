@@ -1,0 +1,3 @@
+# What the smoke test needs (python -m pytest -q test_pace_model.py).
+numpy
+pytest>=8.0

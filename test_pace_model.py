@@ -1,4 +1,4 @@
-"""Smoke tests for pace_model.py: python3 test_pace_model.py"""
+"""Smoke tests for pace_model.py: python3 test_pace_model.py, or python -m pytest -q test_pace_model.py"""
 import pace_model as pm
 
 KEYS = {"median_min", "lo80_min", "hi80_min", "lo95_min", "hi95_min", "wall_risk", "pace_type", "n_train", "model_version"}
@@ -28,6 +28,10 @@ def main():
         except ValueError:
             pass
     print("ok")
+
+
+def test_pace_model():
+    main()
 
 
 if __name__ == "__main__":
