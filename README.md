@@ -1,5 +1,7 @@
 # Hitting the Wall: the marathon pacing-decay curve
 
+[![tests](https://github.com/lyhjeremy/marathon-pacing-decay/actions/workflows/tests.yml/badge.svg)](https://github.com/lyhjeremy/marathon-pacing-decay/actions/workflows/tests.yml)
+
 Where does a marathon field slow down, and can your splits so far predict your finish?
 In the 5 km splits of 31,655 finishers of the 2014 Boston Marathon, median pace is 12.9% slower than the 5 to 10 km pace at 25 to 30 km and 19.4% slower at 30 to 35 km; on the held-out 2024 race the per-mat model predicts the finish from halfway with a mean miss of 7.9 minutes, against 18.1 for even pace.
 
